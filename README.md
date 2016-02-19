@@ -27,6 +27,8 @@ visitorSource
   .then(MyVisitor => visitor = new MyVisitor());
 ```
 
+#### Print path example
+
 visitors have an `accept(node, state, path)` method and visitNodeType methods
 like `visitVariableDeclaration(node, state, path)`. You can customize it to
 your needs, for example:
@@ -44,6 +46,19 @@ console.log(state.join("\n")); // =>
                                //   body.0 - VariableDeclaration
                                //   body.0.declarations.0 - VariableDeclarator
                                //   ...
+```
+
+#### Rewriting example
+
+```js
+var replacer = (node) => lang.obj.merge(node, {id: {type: "Identifier", name: "foo_" + node.id.name}})
+var visitor = new MyVisitor();
+visitor.accept = lang.fun.wrap(visitor.accept, (proceed, node, state, path) => {
+  if (node.type === "VariableDeclarator") node = replacer(node);
+  return proceed(node, state, path);
+});
+var rewritten = visitor.accept(ast.parse("var x = 1 + 3"), null, []);
+ast.stringify(rewritten); // => var foo_x = 1 + 3;
 ```
 
 ## command line
