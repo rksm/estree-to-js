@@ -4,6 +4,17 @@ Parser / JSON + visitor generator of the markdown [estree spec](https://github.c
 
 # Usage
 
+## npdejs API
+
+```js
+var estree = require("estree-to-js");
+estree.fetch("es6")
+  .then(estree.parse)
+  .then(spec => estree.createVisitor(spec, []/*exceptions*/, "MyVisitor"))
+  .then(console.log)
+  .catch(console.error)
+```
+
 ## command line
 
     --out			file output file to write

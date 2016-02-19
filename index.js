@@ -1,6 +1,34 @@
 var lang = require("lively.lang");
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
+// fetching es6 markdown specs
+
+var mdAlias = {
+  es5: ["https://raw.githubusercontent.com/estree/estree/master/spec.md"],
+  es6: ["https://raw.githubusercontent.com/estree/estree/master/spec.md",
+        "https://raw.githubusercontent.com/estree/estree/master/es6.md"]
+}
+
+function fetch(urlStrings) {
+  if (!Array.isArray(urlStrings)) urlStrings = [urlStrings];
+  var urls = [].concat.apply([], urlStrings.map(arg => mdAlias[arg] || [arg]));
+  return Promise.all(urls.map(urlString => {
+    console.log("Fetching %s", urlString);
+    return new Promise((resolve, reject) => {
+      var url = require("url").parse(urlString);
+      require(url.protocol === "https:" ? "https" : "http").get(url, (res) => {
+        var success = res.statusCode < 300;
+        res.resume();
+        var data = "";
+        res.on("data", (d) => data += d);
+        res.on("end", () => success ? resolve(data) : reject(data))
+      }).on('error', reject);
+    });
+  })).then(contents => contents.join("\n"));
+}
+
+
+// -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 // estree spec markdown parser
 function extractTypeSourcesFromMarkdown(mdSource) {
   var types = lang.string.lines(mdSource).reduce((typesAkk, line) => {
@@ -260,5 +288,6 @@ function createVisitor(nodeTypes, exceptions, name) {
 
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
+exports.fetch = fetch;
 exports.createVisitor = createVisitor;
 exports.parse = parse;

@@ -1,0 +1,31 @@
+{
+  "name": "estree-to-js",
+  "version": "0.1.0",
+  "description": "Parser / JSON + visitor generator of the markdown estree spec (https://github.com/estree/estree)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "estree-to-js": "bin/estree-to-js.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rksm/estree-to-js.git"
+  },
+  "keywords": [
+    "estree",
+    "parser",
+    "ast",
+    "visitor"
+  ],
+  "author": "Robert Krahn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rksm/estree-to-js/issues"
+  },
+  "homepage": "https://github.com/rksm/estree-to-js#readme",
+  "dependencies": {
+    "lively.lang": "^0.5.15"
+  }
+}

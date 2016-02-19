@@ -20,13 +20,7 @@ if (args.indexOf("--help") > -1 || args.indexOf("-h") > -1) {
   process.exit(0);
 }
 
-var alias = {
-  es5: ["https://raw.githubusercontent.com/estree/estree/master/spec.md"],
-  es6: ["https://raw.githubusercontent.com/estree/estree/master/spec.md",
-        "https://raw.githubusercontent.com/estree/estree/master/es6.md"]
-}
-
-var parsedArgs = parseArgs(args, alias);
+var parsedArgs = parseArgs(args);
 
 (function main() {
   jsonSpec()
@@ -59,23 +53,9 @@ var parsedArgs = parseArgs(args, alias);
 function jsonSpec() {
   return parsedArgs.specFile ?
     read(parsedArgs.specFile).then(JSON.parse) :
-    Promise.all(parsedArgs.urls.map(fetch))
+    require("../index").fetch(parsedArgs.urls)
       .then(contents => contents.join("\n"))
       .then(mdSource => require("../index").parse(mdSource))
-}
-
-function fetch(urlString) {
-  console.log("Fetching %s", urlString);
-  var url = require("url").parse(urlString);
-  return new Promise((resolve, reject) => {
-    require(url.protocol === "https:" ? "https" : "http").get(url, (res) => {
-      var success = res.statusCode < 300;
-      res.resume();
-      var data = "";
-      res.on("data", (d) => data += d);
-      res.on("end", () => success ? resolve(data) : reject(data))
-    }).on('error', reject);
-  });
 }
 
 function write(path, content) {
@@ -90,7 +70,7 @@ function read(path) {
   })
 }
 
-function parseArgs(args, urlAlias) {
+function parseArgs(args) {
   var out, outI = args.indexOf("--out");
   if (outI > -1) {
     out = args[outI+1];
@@ -110,10 +90,10 @@ function parseArgs(args, urlAlias) {
   args = lang.arr.withoutAll(args, ["--generate-visitor", "--generate-json-spec"]);
 
   if (!args.length) args = ["es6"];
-  var urls = [].concat.apply([], args.map(arg => urlAlias[arg] || [arg]));
+
   return {
     out: out,
-    urls: urls,
+    urls: args,
     specFile: specFile,
     generateJson: generateJson,
     generateVisitor: generateVisitor
