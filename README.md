@@ -6,13 +6,44 @@ Parser / JSON + visitor generator of the markdown [estree spec](https://github.c
 
 ## npdejs API
 
+### estree-to-js interface:
+
 ```js
 var estree = require("estree-to-js");
-estree.fetch("es6")
+var visitorSource = estree.fetch("es6")
   .then(estree.parse)
   .then(spec => estree.createVisitor(spec, []/*exceptions*/, "MyVisitor"))
-  .then(console.log)
   .catch(console.error)
+```
+
+### Visitors
+
+Creation of visitor:
+
+```js
+var visitor;
+visitorSource
+  .then(source => eval(source + "\n" + "MyVisitor"))
+  .then(MyVisitor => visitor = new MyVisitor());
+```
+
+visitors have an `accept(node, state, path)` method and visitNodeType methods
+like `visitVariableDeclaration(node, state, path)`. You can customize it to
+your needs, for example:
+
+```js
+var lang = require("lively.lang"), ast = require("lively.ast");
+visitor.accept = lang.fun.wrap(visitor.accept, (proceed, node, state, path) => {
+  state.push(path.join(".") + " - " + node.type);
+  proceed(node, state, path);
+});
+var state = [];
+visitor.accept(ast.parse("var x = 1+3"), state, []);
+console.log(state.join("\n")); // =>
+                               //   - Program
+                               //   body.0 - VariableDeclaration
+                               //   body.0.declarations.0 - VariableDeclarator
+                               //   ...
 ```
 
 ## command line
