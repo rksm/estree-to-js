@@ -239,6 +239,7 @@ function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, i
   // var exceptionNames = exceptions.map(ea => ea.name).concat(['"const"','"constructor"','"get"','"init"','"let"','"method"','"module"','"script"','"set"','"var"', 'boolean','false','number','string']),
   var code = `visit${nodeType.name} = function visit${nodeType.name}(node, state, path) {\n`;
   indent += "  ";
+  code += `${indent}var visitor = this;\n`
   return nodeType.properties.reduce((code, p) => {
     if (!p.types) return code;
     // var subtypes = lang.arr.withoutAll(p.types, exceptionNames);
@@ -249,8 +250,16 @@ function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, i
       code += `${indent}if (node["${p.name}"]) {\n`;
       indent += "  ";
     }
-    if (p.isList) code += `${indent}node["${p.name}"] = node["${p.name}"].map(function(ea, i) { return this.accept(ea, state, path.concat(["${p.name}", i])); }, this);`
-    else code += `${indent}node["${p.name}"] = this.accept(node["${p.name}"], state, path.concat(["${p.name}"]));\n`
+    if (p.isList) {
+      code += `${indent}node["${p.name}"] = node["${p.name}"].reduce(function(results, ea, i) {\n`
+      code += `${indent}  var result = visitor.accept(ea, state, path.concat(["${p.name}", i]));\n`
+      code += `${indent}  if (Array.isArray(result)) results.push.apply(results, result);\n`
+      code += `${indent}  else results.push(result);\n`
+      code += `${indent}  return results;\n`
+      code += `${indent}}, []);`
+    } else {
+      code += `${indent}node["${p.name}"] = visitor.accept(node["${p.name}"], state, path.concat(["${p.name}"]));\n`
+    }
     if (p.isOptional) {
       indent = indent.slice(0,-2);
       code += `${indent}}\n`;
