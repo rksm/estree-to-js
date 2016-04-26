@@ -32,7 +32,9 @@ function fetch(urlStrings) {
 // estree spec markdown parser
 function extractTypeSourcesFromMarkdown(mdSource) {
   var types = lang.string.lines(mdSource).reduce((typesAkk, line) => {
-    if (typesAkk.current && (line.indexOf("```") > -1 || !line.trim().length)) {
+    if (typesAkk.current && !line.trim().length) {
+      typesAkk.types.push(typesAkk.current); typesAkk.current = [];
+    } else if (typesAkk.current && line.indexOf("```") > -1) {
       typesAkk.types.push(typesAkk.current); typesAkk.current = null;
     } else if (!typesAkk.current && line.indexOf("```js") > -1) {
       typesAkk.current = [];

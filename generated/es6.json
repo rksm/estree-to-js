@@ -1324,11 +1324,13 @@
     ],
     "properties": [
       {
+        "extensionFrom": "ArrayExpression",
         "isList": true,
         "isOptional": true,
         "name": "elements",
         "types": [
-          "Expression"
+          "Expression",
+          "SpreadElement"
         ]
       },
       {
@@ -1640,11 +1642,13 @@
     ],
     "properties": [
       {
+        "extensionFrom": "MemberExpression",
         "isList": false,
         "isOptional": false,
         "name": "object",
         "types": [
-          "Expression"
+          "Expression",
+          "Super"
         ]
       },
       {
@@ -1724,19 +1728,23 @@
     ],
     "properties": [
       {
+        "extensionFrom": "CallExpression",
         "isList": false,
         "isOptional": false,
         "name": "callee",
         "types": [
-          "Expression"
+          "Expression",
+          "Super"
         ]
       },
       {
+        "extensionFrom": "CallExpression",
         "isList": true,
         "isOptional": false,
         "name": "arguments",
         "types": [
-          "Expression"
+          "Expression",
+          "SpreadElement"
         ]
       },
       {
@@ -1998,6 +2006,32 @@
         "name": "computed",
         "types": [
           "boolean"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "ObjectPattern": {
+    "type": "interface",
+    "name": "ObjectPattern",
+    "parents": [
+      "Pattern",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": true,
+        "isOptional": false,
+        "name": "properties",
+        "types": [
+          "AssignmentProperty"
         ]
       },
       {
@@ -2577,19 +2611,23 @@
     ],
     "properties": [
       {
+        "extensionFrom": "CallExpression",
         "isList": false,
         "isOptional": false,
         "name": "callee",
         "types": [
-          "Expression"
+          "Expression",
+          "Super"
         ]
       },
       {
+        "extensionFrom": "CallExpression",
         "isList": true,
         "isOptional": false,
         "name": "arguments",
         "types": [
-          "Expression"
+          "Expression",
+          "SpreadElement"
         ]
       },
       {

@@ -54,7 +54,6 @@ function jsonSpec() {
   return parsedArgs.specFile ?
     read(parsedArgs.specFile).then(JSON.parse) :
     require("../index").fetch(parsedArgs.urls)
-      .then(contents => contents.join("\n"))
       .then(mdSource => require("../index").parse(mdSource))
 }
 
