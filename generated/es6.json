@@ -196,6 +196,15 @@
         ]
       },
       {
+        "extensionFrom": "Function",
+        "isList": false,
+        "isOptional": false,
+        "name": "async",
+        "types": [
+          "false"
+        ]
+      },
+      {
         "isList": false,
         "isOptional": true,
         "name": "loc",
@@ -1412,6 +1421,15 @@
         ]
       },
       {
+        "extensionFrom": "Function",
+        "isList": false,
+        "isOptional": false,
+        "name": "async",
+        "types": [
+          "false"
+        ]
+      },
+      {
         "isList": false,
         "isOptional": true,
         "name": "loc",
@@ -1832,6 +1850,15 @@
         "name": "generator",
         "types": [
           "boolean"
+        ]
+      },
+      {
+        "extensionFrom": "Function",
+        "isList": false,
+        "isOptional": false,
+        "name": "async",
+        "types": [
+          "false"
         ]
       },
       {
@@ -2458,6 +2485,32 @@
       }
     ]
   },
+  "AwaitExpression": {
+    "type": "interface",
+    "name": "AwaitExpression",
+    "parents": [
+      "Expression",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "argument",
+        "types": [
+          "Expression"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
   "RegExpLiteral": {
     "type": "interface",
     "name": "RegExpLiteral",
@@ -2551,6 +2604,15 @@
         "name": "generator",
         "types": [
           "boolean"
+        ]
+      },
+      {
+        "extensionFrom": "Function",
+        "isList": false,
+        "isOptional": false,
+        "name": "async",
+        "types": [
+          "false"
         ]
       },
       {

@@ -1,5 +1,5 @@
 // <<<<<<<<<<<<< BEGIN OF AUTO GENERATED CODE <<<<<<<<<<<<<
-// Generated on 16-04-09 19:25 PDT
+// Generated on 16-05-15 23:05 GMT+0200
 function Visitor() {}
 Visitor.prototype.accept = function accept(node, state, path) {
   if (!node) throw new Error("Undefined AST node in Visitor.accept:\n  " + path.join(".") + "\n  " + node);
@@ -77,6 +77,7 @@ Visitor.prototype.accept = function accept(node, state, path) {
     case "ExportSpecifier": return this.visitExportSpecifier(node, state, path);
     case "ExportDefaultDeclaration": return this.visitExportDefaultDeclaration(node, state, path);
     case "ExportAllDeclaration": return this.visitExportAllDeclaration(node, state, path);
+    case "AwaitExpression": return this.visitAwaitExpression(node, state, path);
     case "RegExpLiteral": return this.visitRegExpLiteral(node, state, path);
     case "FunctionDeclaration": return this.visitFunctionDeclaration(node, state, path);
     case "VariableDeclaration": return this.visitVariableDeclaration(node, state, path);
@@ -976,6 +977,18 @@ Visitor.prototype.visitExportAllDeclaration = function visitExportAllDeclaration
   var visitor = this;
   // source is of types Literal
   node["source"] = visitor.accept(node["source"], state, path.concat(["source"]));
+  // loc is of types SourceLocation
+  if (node["loc"]) {
+    node["loc"] = visitor.accept(node["loc"], state, path.concat(["loc"]));
+  }
+  return node;
+}
+Visitor.prototype.visitAwaitExpression = function visitAwaitExpression(node, state, path) {
+  var visitor = this;
+  // argument is of types Expression
+  if (node["argument"]) {
+    node["argument"] = visitor.accept(node["argument"], state, path.concat(["argument"]));
+  }
   // loc is of types SourceLocation
   if (node["loc"]) {
     node["loc"] = visitor.accept(node["loc"], state, path.concat(["loc"]));
