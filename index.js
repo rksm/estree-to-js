@@ -236,6 +236,8 @@ function parse(mdSource) {
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 // visitor logic
 
+var noVisitProperties = ["loc"];
+
 function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, indent) {
   // var nodeType = nodeTypes.FunctionExpression
   // lang.chain(nodeTypes).values().pluck("properties").invoke("pluck", "types").flatten().uniq().value().sort().join(",");
@@ -244,7 +246,7 @@ function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, i
   indent += "  ";
   code += `${indent}var visitor = this;\n`
   return nodeType.properties.reduce((code, p) => {
-    if (!p.types) return code;
+    if (!p.types || noVisitProperties.indexOf(p.name) > -1) return code;
     // var subtypes = lang.arr.withoutAll(p.types, exceptionNames);
     var subtypes = lang.arr.intersect(p.types, typeNames);
     if (!subtypes.length) return code;
