@@ -1,6 +1,6 @@
 {
   "name": "estree-to-js",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Parser / JSON + visitor generator of the markdown estree spec (https://github.com/estree/estree)",
   "main": "index.js",
   "scripts": {
