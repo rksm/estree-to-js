@@ -256,12 +256,14 @@ function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, i
       indent += "  ";
     }
     if (p.isList) {
-      code += `${indent}node["${p.name}"] = node["${p.name}"].reduce(function(results, ea, i) {\n`
-      code += `${indent}  var result = visitor.accept(ea, state, path.concat(["${p.name}", i]));\n`
-      code += `${indent}  if (Array.isArray(result)) results.push.apply(results, result);\n`
-      code += `${indent}  else results.push(result);\n`
-      code += `${indent}  return results;\n`
-      code += `${indent}}, []);`
+      code += `${indent}var newElements = [];\n`
+      code += `${indent}for (var i = 0; i < node["${p.name}"].length; i++) {\n`
+      code += `${indent}  var ea = node["${p.name}"][i];\n`,
+      code += `${indent}  var acceptedNodes = ea ? visitor.accept(ea, state, path.concat(["${p.name}", i])) : ea;\n`
+      code += `${indent}  if (Array.isArray(acceptedNodes)) newElements.push.apply(newElements, acceptedNodes);\n`
+      code += `${indent}  else newElements.push(acceptedNodes);\n`
+      code += `${indent}}\n`
+      code += `${indent}node["${p.name}"] = newElements;\n`;
     } else {
       code += `${indent}node["${p.name}"] = visitor.accept(node["${p.name}"], state, path.concat(["${p.name}"]));\n`
     }
