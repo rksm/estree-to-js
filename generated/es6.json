@@ -692,6 +692,56 @@
       }
     ]
   },
+  "RestProperty": {
+    "type": "interface",
+    "name": "RestProperty",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "argument",
+        "types": [
+          "Expression"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "SpreadProperty": {
+    "type": "interface",
+    "name": "SpreadProperty",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "argument",
+        "types": [
+          "Expression"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
   "Identifier": {
     "type": "interface",
     "name": "Identifier",
@@ -1361,11 +1411,13 @@
     ],
     "properties": [
       {
+        "extensionFrom": "ObjectExpression",
         "isList": true,
         "isOptional": false,
         "name": "properties",
         "types": [
-          "Property"
+          "Property",
+          "SpreadProperty"
         ]
       },
       {
@@ -2054,11 +2106,13 @@
     ],
     "properties": [
       {
+        "extensionFrom": "ObjectPattern",
         "isList": true,
         "isOptional": false,
         "name": "properties",
         "types": [
-          "AssignmentProperty"
+          "AssignmentProperty",
+          "RestProperty"
         ]
       },
       {

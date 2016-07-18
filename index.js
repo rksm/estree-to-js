@@ -7,7 +7,8 @@ var mdAlias = {
   es5: ["https://raw.githubusercontent.com/estree/estree/master/spec.md"],
   es6: ["https://raw.githubusercontent.com/estree/estree/master/spec.md",
         "https://raw.githubusercontent.com/estree/estree/master/es6.md",
-        "https://raw.githubusercontent.com/estree/estree/master/experimental/async-functions.md"]
+        "https://raw.githubusercontent.com/estree/estree/master/experimental/async-functions.md",
+        "https://raw.githubusercontent.com/estree/estree/master/experimental/rest-spread-properties.md"]
 }
 
 function fetch(urlStrings) {
