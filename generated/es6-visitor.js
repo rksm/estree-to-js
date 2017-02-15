@@ -1,5 +1,5 @@
 // <<<<<<<<<<<<< BEGIN OF AUTO GENERATED CODE <<<<<<<<<<<<<
-// Generated on 16-07-17 17:23 PDT
+// Generated on 17-02-14 16:31 PST
 function Visitor() {}
 Visitor.prototype.accept = function accept(node, state, path) {
   if (!node) throw new Error("Undefined AST node in Visitor.accept:\n  " + path.join(".") + "\n  " + node);
@@ -25,8 +25,6 @@ Visitor.prototype.accept = function accept(node, state, path) {
     case "MethodDefinition": return this.visitMethodDefinition(node, state, path);
     case "ModuleDeclaration": return this.visitModuleDeclaration(node, state, path);
     case "ModuleSpecifier": return this.visitModuleSpecifier(node, state, path);
-    case "RestProperty": return this.visitRestProperty(node, state, path);
-    case "SpreadProperty": return this.visitSpreadProperty(node, state, path);
     case "Identifier": return this.visitIdentifier(node, state, path);
     case "Literal": return this.visitLiteral(node, state, path);
     case "ExpressionStatement": return this.visitExpressionStatement(node, state, path);
@@ -59,6 +57,7 @@ Visitor.prototype.accept = function accept(node, state, path) {
     case "MemberExpression": return this.visitMemberExpression(node, state, path);
     case "ConditionalExpression": return this.visitConditionalExpression(node, state, path);
     case "CallExpression": return this.visitCallExpression(node, state, path);
+    case "NewExpression": return this.visitNewExpression(node, state, path);
     case "SequenceExpression": return this.visitSequenceExpression(node, state, path);
     case "ArrowFunctionExpression": return this.visitArrowFunctionExpression(node, state, path);
     case "YieldExpression": return this.visitYieldExpression(node, state, path);
@@ -79,11 +78,9 @@ Visitor.prototype.accept = function accept(node, state, path) {
     case "ExportSpecifier": return this.visitExportSpecifier(node, state, path);
     case "ExportDefaultDeclaration": return this.visitExportDefaultDeclaration(node, state, path);
     case "ExportAllDeclaration": return this.visitExportAllDeclaration(node, state, path);
-    case "AwaitExpression": return this.visitAwaitExpression(node, state, path);
     case "RegExpLiteral": return this.visitRegExpLiteral(node, state, path);
     case "FunctionDeclaration": return this.visitFunctionDeclaration(node, state, path);
     case "VariableDeclaration": return this.visitVariableDeclaration(node, state, path);
-    case "NewExpression": return this.visitNewExpression(node, state, path);
     case "ForOfStatement": return this.visitForOfStatement(node, state, path);
     case "ClassDeclaration": return this.visitClassDeclaration(node, state, path);
   }
@@ -249,18 +246,6 @@ Visitor.prototype.visitModuleSpecifier = function visitModuleSpecifier(node, sta
   var visitor = this;
   // local is of types Identifier
   node["local"] = visitor.accept(node["local"], state, path.concat(["local"]));
-  return node;
-}
-Visitor.prototype.visitRestProperty = function visitRestProperty(node, state, path) {
-  var visitor = this;
-  // argument is of types Expression
-  node["argument"] = visitor.accept(node["argument"], state, path.concat(["argument"]));
-  return node;
-}
-Visitor.prototype.visitSpreadProperty = function visitSpreadProperty(node, state, path) {
-  var visitor = this;
-  // argument is of types Expression
-  node["argument"] = visitor.accept(node["argument"], state, path.concat(["argument"]));
   return node;
 }
 Visitor.prototype.visitIdentifier = function visitIdentifier(node, state, path) {
@@ -454,7 +439,7 @@ Visitor.prototype.visitArrayExpression = function visitArrayExpression(node, sta
 }
 Visitor.prototype.visitObjectExpression = function visitObjectExpression(node, state, path) {
   var visitor = this;
-  // properties is a list with types Property, SpreadProperty
+  // properties is a list with types Property
   var newElements = [];
   for (var i = 0; i < node["properties"].length; i++) {
     var ea = node["properties"][i];
@@ -553,6 +538,21 @@ Visitor.prototype.visitCallExpression = function visitCallExpression(node, state
   node["arguments"] = newElements;
   return node;
 }
+Visitor.prototype.visitNewExpression = function visitNewExpression(node, state, path) {
+  var visitor = this;
+  // callee is of types Expression
+  node["callee"] = visitor.accept(node["callee"], state, path.concat(["callee"]));
+  // arguments is a list with types Expression
+  var newElements = [];
+  for (var i = 0; i < node["arguments"].length; i++) {
+    var ea = node["arguments"][i];
+    var acceptedNodes = ea ? visitor.accept(ea, state, path.concat(["arguments", i])) : ea;
+    if (Array.isArray(acceptedNodes)) newElements.push.apply(newElements, acceptedNodes);
+    else newElements.push(acceptedNodes);
+  }
+  node["arguments"] = newElements;
+  return node;
+}
 Visitor.prototype.visitSequenceExpression = function visitSequenceExpression(node, state, path) {
   var visitor = this;
   // expressions is a list with types Expression
@@ -633,7 +633,7 @@ Visitor.prototype.visitAssignmentProperty = function visitAssignmentProperty(nod
 }
 Visitor.prototype.visitObjectPattern = function visitObjectPattern(node, state, path) {
   var visitor = this;
-  // properties is a list with types AssignmentProperty, RestProperty
+  // properties is a list with types AssignmentProperty
   var newElements = [];
   for (var i = 0; i < node["properties"].length; i++) {
     var ea = node["properties"][i];
@@ -771,14 +771,6 @@ Visitor.prototype.visitExportAllDeclaration = function visitExportAllDeclaration
   node["source"] = visitor.accept(node["source"], state, path.concat(["source"]));
   return node;
 }
-Visitor.prototype.visitAwaitExpression = function visitAwaitExpression(node, state, path) {
-  var visitor = this;
-  // argument is of types Expression
-  if (node["argument"]) {
-    node["argument"] = visitor.accept(node["argument"], state, path.concat(["argument"]));
-  }
-  return node;
-}
 Visitor.prototype.visitRegExpLiteral = function visitRegExpLiteral(node, state, path) {
   var visitor = this;
   return node;
@@ -811,21 +803,6 @@ Visitor.prototype.visitVariableDeclaration = function visitVariableDeclaration(n
     else newElements.push(acceptedNodes);
   }
   node["declarations"] = newElements;
-  return node;
-}
-Visitor.prototype.visitNewExpression = function visitNewExpression(node, state, path) {
-  var visitor = this;
-  // callee is of types Expression, Super
-  node["callee"] = visitor.accept(node["callee"], state, path.concat(["callee"]));
-  // arguments is a list with types Expression, SpreadElement
-  var newElements = [];
-  for (var i = 0; i < node["arguments"].length; i++) {
-    var ea = node["arguments"][i];
-    var acceptedNodes = ea ? visitor.accept(ea, state, path.concat(["arguments", i])) : ea;
-    if (Array.isArray(acceptedNodes)) newElements.push.apply(newElements, acceptedNodes);
-    else newElements.push(acceptedNodes);
-  }
-  node["arguments"] = newElements;
   return node;
 }
 Visitor.prototype.visitForOfStatement = function visitForOfStatement(node, state, path) {

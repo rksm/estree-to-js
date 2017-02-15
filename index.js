@@ -4,10 +4,14 @@ var lang = require("lively.lang");
 // fetching es6 markdown specs
 
 var mdAlias = {
-  es5: ["https://raw.githubusercontent.com/estree/estree/master/spec.md"],
-  es6: ["https://raw.githubusercontent.com/estree/estree/master/spec.md",
-        "https://raw.githubusercontent.com/estree/estree/master/es6.md",
-        "https://raw.githubusercontent.com/estree/estree/master/experimental/async-functions.md",
+  es5: ["https://raw.githubusercontent.com/estree/estree/master/es5.md"],
+  es6: ["https://raw.githubusercontent.com/estree/estree/master/es5.md",
+        "https://raw.githubusercontent.com/estree/estree/master/es2015.md",
+        "https://raw.githubusercontent.com/estree/estree/master/es2016.md"],
+  es7: ["https://raw.githubusercontent.com/estree/estree/master/es5.md",
+        "https://raw.githubusercontent.com/estree/estree/master/es2015.md",
+        "https://raw.githubusercontent.com/estree/estree/master/es2016.md",
+        "https://raw.githubusercontent.com/estree/estree/master/es2017.md",
         "https://raw.githubusercontent.com/estree/estree/master/experimental/rest-spread-properties.md"]
 }
 
@@ -62,9 +66,9 @@ function parseInterface(source) {
     spec.name = m[1].trim();
     if (m[2]) spec.parents = m[2].split(",").map(p => p.trim());
   }
-  
+
   if (start.trim().slice(-1) === "{") lines.unshift("{");
-  
+
   var i = 0;
   do {
     if (i++ > 1000) throw new Error("Endless loop in parseInterface");
@@ -72,7 +76,7 @@ function parseInterface(source) {
     spec.properties = spec.properties.concat(remainingLinesAndProps.properties);
     lines = remainingLinesAndProps.lines;
   } while (lines.length);
-  
+
   return spec;
 }
 
@@ -103,12 +107,19 @@ function parseEnum(code) {
       if (m) spec.name = m[1].trim();
     }
     else if (line.trim() === "}") {/*end*/}
-    else spec.types = line.split("|").map(ea => ea.trim().replace(/"/g, ""));
+    else {
+      if (!spec.types) spec.types = [];
+      spec.types = spec.types.concat(
+        line.split("|")
+          .map(ea => ea.trim().replace(/^"|"$/g, ""))
+          .filter(Boolean));
+    };
     return spec;
   }, {type: "enum", name: null, types: []});
 }
 
 function parseExtend(code) {
+
   return lang.string.lines(code).reduce((spec, line, i) => {
     if (i === 0) {
       // var line = "extend interface Program {"
@@ -119,7 +130,13 @@ function parseExtend(code) {
       }
     }
     else if (line.trim() === "}") {/*end*/}
-    else {
+    else if (spec.extendedType === "enum") {
+      if (!spec.types) spec.types = [];
+      spec.types = spec.types.concat(
+        line.split("|")
+          .map(ea => ea.trim().replace(/^"|"$/g, ""))
+          .filter(Boolean));
+    } else {
       // var line = '    sourceType: "script" | "module";'
       var propMatch = line.match(/\s*([^:]+):([^;]+)/);
       if (propMatch) {
@@ -152,26 +169,35 @@ function parsePropertyValue(name, string) {
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 
 function findTypeForExtend(types, extend) {
-  var orig = lang.arr.detect(types, ea => ea.name === extend.name && ea.type !== "extend");
+  var orig = types.find(ea => ea.name === extend.name && ea.type !== "extend");
   if (!orig) throw new Error("Cannot find original for extension " + JSON.stringify(extend, null, 2));
   return orig;
 }
 
 function mergeExtend(type, extension) {
-  console.assert(type.name === extension.name, `${type.name} != ${extension.name}`);
+  console.assert(type.name === extension.name, `name doesn't match '${type.name} != ${extension.name}`);
+  console.assert(type.type === extension.extendedType, `extendedType doesn't match '${type.type} != ${extension.extendedType}`);
+
+  if (extension.extendedType === "enum") {
+    type = lang.obj.clone(type);
+    type.types = type.types.concat(extension.types);
+    return type;
+  }
+
   var props = extension.properties.reduce((props, extensionProp) => {
-    var existing = lang.arr.detect(props, prop => prop.name === extensionProp.name);
+    var existing = props.find(prop => prop.name === extensionProp.name);
     var index = props.indexOf(existing);
     if (index > -1) props.splice(index, 1, extensionProp);
     else props.push(extensionProp);
     return props;
   }, type.properties.slice());
   return lang.obj.merge(type, {properties: props});
+
 }
 
 function mergeProperties(base, extension) {
   var props = extension.properties.reduce((props, extensionProp) => {
-    var existing = lang.arr.detect(props, prop => prop.name === extensionProp.name);
+    var existing = props.find(prop => prop.name === extensionProp.name);
     var index = props.indexOf(existing);
     if (index > -1) {
       var merged = lang.obj.clone(existing);
@@ -190,6 +216,9 @@ function mergeProperties(base, extension) {
 }
 
 function mergeExtensions(types, extensions) {
+// types = groups["interface"]
+// extensions = groups.extend || []
+
   return extensions.reduce((types, extension) => {
     var orig = findTypeForExtend(types, extension);
     types.splice(types.indexOf(orig), 1, mergeExtend(orig, extension));
@@ -210,7 +239,7 @@ function sortInterfacesByInheritance(parsedInterfaces) {
     remaining.forEach(ea => deps[ea] = lang.arr.withoutAll(deps[ea], resolved));
     sorted = sorted.concat(resolved);
   } while (remaining.length);
-  return sorted.map(name => lang.arr.detect(parsedInterfaces, ea => ea.name === name));
+  return sorted.map(name => parsedInterfaces.find(ea => ea.name === name));
 }
 
 function canonicalizeInterfaces(parsedInterfaces) {
@@ -226,11 +255,13 @@ function canonicalizeInterfaces(parsedInterfaces) {
 function parse(mdSource) {
   var parsed = extractTypeSourcesFromMarkdown(mdSource).map(parseInterfaceOrEnumOrExtend),
       groups = lang.arr.groupByKey(parsed, "type"),
-      parsedInterfaces = mergeExtensions(groups["interface"], groups.extend),
+      parsedAndExtended = mergeExtensions(groups["interface"].concat(groups["enum"] || []), groups.extend || []),
+      parsedInterfaces = parsedAndExtended.filter(ea => ea.type === "interface"),
+      parsedEnums = parsedAndExtended.filter(ea => ea.type === "enum"),
       sortedInterfaces = sortInterfacesByInheritance(parsedInterfaces),
       nodeTypes = canonicalizeInterfaces(sortedInterfaces);
   return lang.obj.merge(
-    groups.enum.reduce((enums, ea) => (enums[ea.name] = ea) && enums, {}),
+    parsedEnums.reduce((enums, ea) => (enums[ea.name] = ea) && enums, {}),
     nodeTypes);
 }
 

@@ -24,28 +24,52 @@
     "type": "enum",
     "name": "BinaryOperator",
     "types": [
-      "",
-      "instanceof"
+      "==",
+      "!=",
+      "===",
+      "!==",
+      "<",
+      "<=",
+      ">",
+      ">=",
+      "<<",
+      ">>",
+      ">>>",
+      "+",
+      "-",
+      "*",
+      "/",
+      "%",
+      "^",
+      "&",
+      "in",
+      "instanceof",
+      "**"
     ]
   },
   "AssignmentOperator": {
     "type": "enum",
     "name": "AssignmentOperator",
     "types": [
-      "",
-      "",
+      "=",
+      "+=",
+      "-=",
+      "*=",
+      "/=",
+      "%=",
+      "<<=",
+      ">>=",
+      ">>>=",
       "=",
       "^=",
-      "&="
+      "&=",
+      "**="
     ]
   },
   "LogicalOperator": {
     "type": "enum",
     "name": "LogicalOperator",
     "types": [
-      "",
-      "",
-      "",
       "&&"
     ]
   },
@@ -193,15 +217,6 @@
         "name": "generator",
         "types": [
           "boolean"
-        ]
-      },
-      {
-        "extensionFrom": "Function",
-        "isList": false,
-        "isOptional": false,
-        "name": "async",
-        "types": [
-          "false"
         ]
       },
       {
@@ -680,56 +695,6 @@
         "name": "local",
         "types": [
           "Identifier"
-        ]
-      },
-      {
-        "isList": false,
-        "isOptional": true,
-        "name": "loc",
-        "types": [
-          "SourceLocation"
-        ]
-      }
-    ]
-  },
-  "RestProperty": {
-    "type": "interface",
-    "name": "RestProperty",
-    "parents": [
-      "Node"
-    ],
-    "properties": [
-      {
-        "isList": false,
-        "isOptional": false,
-        "name": "argument",
-        "types": [
-          "Expression"
-        ]
-      },
-      {
-        "isList": false,
-        "isOptional": true,
-        "name": "loc",
-        "types": [
-          "SourceLocation"
-        ]
-      }
-    ]
-  },
-  "SpreadProperty": {
-    "type": "interface",
-    "name": "SpreadProperty",
-    "parents": [
-      "Node"
-    ],
-    "properties": [
-      {
-        "isList": false,
-        "isOptional": false,
-        "name": "argument",
-        "types": [
-          "Expression"
         ]
       },
       {
@@ -1411,13 +1376,11 @@
     ],
     "properties": [
       {
-        "extensionFrom": "ObjectExpression",
         "isList": true,
         "isOptional": false,
         "name": "properties",
         "types": [
-          "Property",
-          "SpreadProperty"
+          "Property"
         ]
       },
       {
@@ -1470,15 +1433,6 @@
         "name": "generator",
         "types": [
           "boolean"
-        ]
-      },
-      {
-        "extensionFrom": "Function",
-        "isList": false,
-        "isOptional": false,
-        "name": "async",
-        "types": [
-          "false"
         ]
       },
       {
@@ -1827,6 +1781,40 @@
       }
     ]
   },
+  "NewExpression": {
+    "type": "interface",
+    "name": "NewExpression",
+    "parents": [
+      "Expression",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "callee",
+        "types": [
+          "Expression"
+        ]
+      },
+      {
+        "isList": true,
+        "isOptional": false,
+        "name": "arguments",
+        "types": [
+          "Expression"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
   "SequenceExpression": {
     "type": "interface",
     "name": "SequenceExpression",
@@ -1902,15 +1890,6 @@
         "name": "generator",
         "types": [
           "boolean"
-        ]
-      },
-      {
-        "extensionFrom": "Function",
-        "isList": false,
-        "isOptional": false,
-        "name": "async",
-        "types": [
-          "false"
         ]
       },
       {
@@ -2106,13 +2085,11 @@
     ],
     "properties": [
       {
-        "extensionFrom": "ObjectPattern",
         "isList": true,
         "isOptional": false,
         "name": "properties",
         "types": [
-          "AssignmentProperty",
-          "RestProperty"
+          "AssignmentProperty"
         ]
       },
       {
@@ -2539,32 +2516,6 @@
       }
     ]
   },
-  "AwaitExpression": {
-    "type": "interface",
-    "name": "AwaitExpression",
-    "parents": [
-      "Expression",
-      "Node"
-    ],
-    "properties": [
-      {
-        "isList": false,
-        "isOptional": true,
-        "name": "argument",
-        "types": [
-          "Expression"
-        ]
-      },
-      {
-        "isList": false,
-        "isOptional": true,
-        "name": "loc",
-        "types": [
-          "SourceLocation"
-        ]
-      }
-    ]
-  },
   "RegExpLiteral": {
     "type": "interface",
     "name": "RegExpLiteral",
@@ -2661,15 +2612,6 @@
         ]
       },
       {
-        "extensionFrom": "Function",
-        "isList": false,
-        "isOptional": false,
-        "name": "async",
-        "types": [
-          "false"
-        ]
-      },
-      {
         "isList": false,
         "isOptional": true,
         "name": "loc",
@@ -2705,45 +2647,6 @@
           "\"var\"",
           "\"let\"",
           "\"const\""
-        ]
-      },
-      {
-        "isList": false,
-        "isOptional": true,
-        "name": "loc",
-        "types": [
-          "SourceLocation"
-        ]
-      }
-    ]
-  },
-  "NewExpression": {
-    "type": "interface",
-    "name": "NewExpression",
-    "parents": [
-      "CallExpression",
-      "Expression",
-      "Node"
-    ],
-    "properties": [
-      {
-        "extensionFrom": "CallExpression",
-        "isList": false,
-        "isOptional": false,
-        "name": "callee",
-        "types": [
-          "Expression",
-          "Super"
-        ]
-      },
-      {
-        "extensionFrom": "CallExpression",
-        "isList": true,
-        "isOptional": false,
-        "name": "arguments",
-        "types": [
-          "Expression",
-          "SpreadElement"
         ]
       },
       {
