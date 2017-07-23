@@ -3,16 +3,30 @@ var lang = require("lively.lang");
 // -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
 // fetching es6 markdown specs
 
-var mdAlias = {
-  es5: ["https://raw.githubusercontent.com/estree/estree/master/es5.md"],
-  es6: ["https://raw.githubusercontent.com/estree/estree/master/es5.md",
-        "https://raw.githubusercontent.com/estree/estree/master/es2015.md",
-        "https://raw.githubusercontent.com/estree/estree/master/es2016.md"],
-  es7: ["https://raw.githubusercontent.com/estree/estree/master/es5.md",
-        "https://raw.githubusercontent.com/estree/estree/master/es2015.md",
-        "https://raw.githubusercontent.com/estree/estree/master/es2016.md",
-        "https://raw.githubusercontent.com/estree/estree/master/es2017.md",
-        "https://raw.githubusercontent.com/estree/estree/master/experimental/rest-spread-properties.md"]
+var mdAlias = {  
+  get es5() {
+    return ["https://raw.githubusercontent.com/estree/estree/master/es5.md"]
+  },
+  get es6() {
+    return [
+      ...this.es5,
+      "https://raw.githubusercontent.com/estree/estree/master/es2015.md",
+      "https://raw.githubusercontent.com/estree/estree/master/es2016.md"
+    ]
+  },
+  get es7() {
+    return [
+      ...this.es6,
+      "https://raw.githubusercontent.com/estree/estree/master/es2017.md",
+      "https://raw.githubusercontent.com/estree/estree/master/experimental/rest-spread-properties.md"
+    ]
+  },
+  get es7Jsx() {
+    return [
+      ...this.es7,
+      "https://raw.githubusercontent.com/facebook/jsx/master/AST.md"
+    ]
+  }
 }
 
 function fetch(urlStrings) {
@@ -38,6 +52,7 @@ function fetch(urlStrings) {
 // estree spec markdown parser
 function extractTypeSourcesFromMarkdown(mdSource) {
   var types = lang.string.lines(mdSource).reduce((typesAkk, line) => {
+    if (line.trim().startsWith("//")) return typesAkk;
     if (typesAkk.current && !line.trim().length) {
       typesAkk.types.push(typesAkk.current); typesAkk.current = [];
     } else if (typesAkk.current && line.indexOf("```") > -1) {
@@ -309,7 +324,7 @@ function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, i
 
 function createVisitor(nodeTypes, exceptions, name) {
   var code = `// <<<<<<<<<<<<< BEGIN OF AUTO GENERATED CODE <<<<<<<<<<<<<\n`;
-  code += `// Generated on ${lang.date.format('yy-mm-dd HH:MM Z')}\n`
+  code += `// Generated on ${lang.date.format(new Date(), 'yy-mm-dd HH:MM Z')}\n`
   code += `function ${name}() {}\n`;
   exceptions = exceptions.concat(lang.obj.values(nodeTypes).filter(ea => ea.type === "enum"));
   var types = lang.arr.withoutAll(lang.obj.values(nodeTypes), exceptions);
