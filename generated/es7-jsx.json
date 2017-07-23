@@ -824,7 +824,7 @@
         "name": "name",
         "types": [
           "JSXIdentifier",
-          "JSXNamespacedName,"
+          "JSXNamespacedName"
         ]
       },
       {
@@ -859,7 +859,7 @@
         "isOptional": false,
         "name": "value",
         "types": [
-          "string,"
+          "string"
         ]
       },
       {
@@ -2751,7 +2751,7 @@
         "name": "object",
         "types": [
           "JSXMemberExpression",
-          "JSXIdentifier,"
+          "JSXIdentifier"
         ]
       },
       {
@@ -2785,7 +2785,7 @@
         "isOptional": false,
         "name": "namespace",
         "types": [
-          "JSXIdentifier,"
+          "JSXIdentifier"
         ]
       },
       {
@@ -2815,12 +2815,12 @@
     ],
     "properties": [
       {
-        "isList": false,
+        "isList": true,
         "isOptional": false,
         "name": "attributes",
         "types": [
-          "[ JSXAttribute",
-          "JSXSpreadAttribute ],"
+          "JSXAttribute",
+          "JSXSpreadAttribute"
         ]
       },
       {
@@ -2918,18 +2918,18 @@
         "isOptional": false,
         "name": "openingElement",
         "types": [
-          "JSXOpeningElement,"
+          "JSXOpeningElement"
         ]
       },
       {
-        "isList": false,
+        "isList": true,
         "isOptional": false,
         "name": "children",
         "types": [
-          "[ JSXText",
+          "JSXText",
           "JSXExpressionContainer",
           "JSXSpreadChild",
-          "JSXElement ],"
+          "JSXElement"
         ]
       },
       {

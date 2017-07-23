@@ -79,7 +79,7 @@ function parseInterface(source) {
   var m = start.match(/interface\s+([^\s]+)(?:\s+<:\s+([^\{]+))?/)
   if (m) {
     spec.name = m[1].trim();
-    if (m[2]) spec.parents = m[2].split(",").map(p => p.trim());
+    if (m[2]) spec.parents = m[2].split(",").map(p => p.trim()).filter(Boolean);
   }
 
   if (start.trim().slice(-1) === "{") lines.unshift("{");
@@ -98,8 +98,9 @@ function parseInterface(source) {
 function parseKeysAndValues(lines) {
   var line, props = [];
   while (line = lines.shift()) {
+    line = line.replace(/,$/, ";");
     if (line.match(/^\s*\{\s*$/)) continue;
-    if (line.match(/^\s*\};?\s*$/)) break;
+    if (line.match(/^\s*\}[;,]?\s*$/)) break;
     var propMatch = line.match(/\s*([^:]+):([^;]+)/);
     if (!propMatch) throw new Error("Cannot parse property line " + line);
     var name = propMatch[1], rest = propMatch[2].trim();
@@ -117,6 +118,7 @@ function parseKeysAndValues(lines) {
 
 function parseEnum(code) {
   return lang.string.lines(code).reduce((spec, line, i) => {
+    line = line.replace(/,$/, ";");
     if (i === 0) {
       var m = line.match(/enum([^\{]+)/)
       if (m) spec.name = m[1].trim();
@@ -136,6 +138,7 @@ function parseEnum(code) {
 function parseExtend(code) {
 
   return lang.string.lines(code).reduce((spec, line, i) => {
+    line = line.replace(/,$/, ";");
     if (i === 0) {
       // var line = "extend interface Program {"
       var m = line.match(/extend\s+([^\s]+)\s+([^\{]+)/);

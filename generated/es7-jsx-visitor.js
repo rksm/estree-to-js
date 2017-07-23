@@ -1,5 +1,5 @@
 // <<<<<<<<<<<<< BEGIN OF AUTO GENERATED CODE <<<<<<<<<<<<<
-// Generated on 17-07-23 16:09 PDT
+// Generated on 17-07-23 16:45 PDT
 function Visitor() {}
 Visitor.prototype.accept = function accept(node, state, path) {
   if (!node) throw new Error("Undefined AST node in Visitor.accept:\n  " + path.join(".") + "\n  " + node);
@@ -286,7 +286,7 @@ Visitor.prototype.visitJSXBoundaryElement = function visitJSXBoundaryElement(nod
 }
 Visitor.prototype.visitJSXAttribute = function visitJSXAttribute(node, state, path) {
   var visitor = this;
-  // name is of types JSXIdentifier, JSXNamespacedName,
+  // name is of types JSXIdentifier, JSXNamespacedName
   node["name"] = visitor.accept(node["name"], state, path.concat(["name"]));
   // value is of types Literal, JSXExpressionContainer, JSXElement
   if (node["value"]) {
@@ -829,7 +829,7 @@ Visitor.prototype.visitAwaitExpression = function visitAwaitExpression(node, sta
 }
 Visitor.prototype.visitJSXMemberExpression = function visitJSXMemberExpression(node, state, path) {
   var visitor = this;
-  // object is of types JSXMemberExpression, JSXIdentifier,
+  // object is of types JSXMemberExpression, JSXIdentifier
   node["object"] = visitor.accept(node["object"], state, path.concat(["object"]));
   // property is of types JSXIdentifier
   node["property"] = visitor.accept(node["property"], state, path.concat(["property"]));
@@ -837,12 +837,23 @@ Visitor.prototype.visitJSXMemberExpression = function visitJSXMemberExpression(n
 }
 Visitor.prototype.visitJSXNamespacedName = function visitJSXNamespacedName(node, state, path) {
   var visitor = this;
+  // namespace is of types JSXIdentifier
+  node["namespace"] = visitor.accept(node["namespace"], state, path.concat(["namespace"]));
   // name is of types JSXIdentifier
   node["name"] = visitor.accept(node["name"], state, path.concat(["name"]));
   return node;
 }
 Visitor.prototype.visitJSXOpeningElement = function visitJSXOpeningElement(node, state, path) {
   var visitor = this;
+  // attributes is a list with types JSXAttribute, JSXSpreadAttribute
+  var newElements = [];
+  for (var i = 0; i < node["attributes"].length; i++) {
+    var ea = node["attributes"][i];
+    var acceptedNodes = ea ? visitor.accept(ea, state, path.concat(["attributes", i])) : ea;
+    if (Array.isArray(acceptedNodes)) newElements.push.apply(newElements, acceptedNodes);
+    else newElements.push(acceptedNodes);
+  }
+  node["attributes"] = newElements;
   // name is of types JSXIdentifier, JSXMemberExpression, JSXNamespacedName
   node["name"] = visitor.accept(node["name"], state, path.concat(["name"]));
   return node;
@@ -861,8 +872,17 @@ Visitor.prototype.visitJSXSpreadAttribute = function visitJSXSpreadAttribute(nod
 }
 Visitor.prototype.visitJSXElement = function visitJSXElement(node, state, path) {
   var visitor = this;
-  // children is of types [ JSXText, JSXExpressionContainer, JSXSpreadChild, JSXElement ],
-  node["children"] = visitor.accept(node["children"], state, path.concat(["children"]));
+  // openingElement is of types JSXOpeningElement
+  node["openingElement"] = visitor.accept(node["openingElement"], state, path.concat(["openingElement"]));
+  // children is a list with types JSXText, JSXExpressionContainer, JSXSpreadChild, JSXElement
+  var newElements = [];
+  for (var i = 0; i < node["children"].length; i++) {
+    var ea = node["children"][i];
+    var acceptedNodes = ea ? visitor.accept(ea, state, path.concat(["children", i])) : ea;
+    if (Array.isArray(acceptedNodes)) newElements.push.apply(newElements, acceptedNodes);
+    else newElements.push(acceptedNodes);
+  }
+  node["children"] = newElements;
   // closingElement is of types JSXClosingElement
   if (node["closingElement"]) {
     node["closingElement"] = visitor.accept(node["closingElement"], state, path.concat(["closingElement"]));
