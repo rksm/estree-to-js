@@ -75,4 +75,4 @@ ast.stringify(rewritten); // => var foo_x = 1 + 3;
 
 # License
 
-MIT
+[MIT](LICENSE)

@@ -1,5 +1,5 @@
 // <<<<<<<<<<<<< BEGIN OF AUTO GENERATED CODE <<<<<<<<<<<<<
-// Generated on 17-07-23 16:45 PDT
+// Generated on 17-11-28 13:01 PST
 function Visitor() {}
 Visitor.prototype.accept = function accept(node, state, path) {
   if (!node) throw new Error("Undefined AST node in Visitor.accept:\n  " + path.join(".") + "\n  " + node);
@@ -11,6 +11,7 @@ Visitor.prototype.accept = function accept(node, state, path) {
     case "Program": return this.visitProgram(node, state, path);
     case "Function": return this.visitFunction(node, state, path);
     case "Statement": return this.visitStatement(node, state, path);
+    case "Directive": return this.visitDirective(node, state, path);
     case "SwitchCase": return this.visitSwitchCase(node, state, path);
     case "CatchClause": return this.visitCatchClause(node, state, path);
     case "VariableDeclarator": return this.visitVariableDeclarator(node, state, path);
@@ -79,6 +80,7 @@ Visitor.prototype.accept = function accept(node, state, path) {
     case "ExportDefaultDeclaration": return this.visitExportDefaultDeclaration(node, state, path);
     case "ExportAllDeclaration": return this.visitExportAllDeclaration(node, state, path);
     case "RegExpLiteral": return this.visitRegExpLiteral(node, state, path);
+    case "FunctionBody": return this.visitFunctionBody(node, state, path);
     case "FunctionDeclaration": return this.visitFunctionDeclaration(node, state, path);
     case "VariableDeclaration": return this.visitVariableDeclaration(node, state, path);
     case "ForOfStatement": return this.visitForOfStatement(node, state, path);
@@ -130,12 +132,18 @@ Visitor.prototype.visitFunction = function visitFunction(node, state, path) {
     else newElements.push(acceptedNodes);
   }
   node["params"] = newElements;
-  // body is of types BlockStatement
+  // body is of types FunctionBody
   node["body"] = visitor.accept(node["body"], state, path.concat(["body"]));
   return node;
 }
 Visitor.prototype.visitStatement = function visitStatement(node, state, path) {
   var visitor = this;
+  return node;
+}
+Visitor.prototype.visitDirective = function visitDirective(node, state, path) {
+  var visitor = this;
+  // expression is of types Literal
+  node["expression"] = visitor.accept(node["expression"], state, path.concat(["expression"]));
   return node;
 }
 Visitor.prototype.visitSwitchCase = function visitSwitchCase(node, state, path) {
@@ -465,7 +473,7 @@ Visitor.prototype.visitFunctionExpression = function visitFunctionExpression(nod
     else newElements.push(acceptedNodes);
   }
   node["params"] = newElements;
-  // body is of types BlockStatement
+  // body is of types FunctionBody
   node["body"] = visitor.accept(node["body"], state, path.concat(["body"]));
   return node;
 }
@@ -568,7 +576,7 @@ Visitor.prototype.visitSequenceExpression = function visitSequenceExpression(nod
 }
 Visitor.prototype.visitArrowFunctionExpression = function visitArrowFunctionExpression(node, state, path) {
   var visitor = this;
-  // body is of types BlockStatement, Expression
+  // body is of types FunctionBody, Expression
   node["body"] = visitor.accept(node["body"], state, path.concat(["body"]));
   // id is of types Identifier
   if (node["id"]) {
@@ -775,6 +783,19 @@ Visitor.prototype.visitRegExpLiteral = function visitRegExpLiteral(node, state, 
   var visitor = this;
   return node;
 }
+Visitor.prototype.visitFunctionBody = function visitFunctionBody(node, state, path) {
+  var visitor = this;
+  // body is a list with types Directive, Statement
+  var newElements = [];
+  for (var i = 0; i < node["body"].length; i++) {
+    var ea = node["body"][i];
+    var acceptedNodes = ea ? visitor.accept(ea, state, path.concat(["body", i])) : ea;
+    if (Array.isArray(acceptedNodes)) newElements.push.apply(newElements, acceptedNodes);
+    else newElements.push(acceptedNodes);
+  }
+  node["body"] = newElements;
+  return node;
+}
 Visitor.prototype.visitFunctionDeclaration = function visitFunctionDeclaration(node, state, path) {
   var visitor = this;
   // id is of types Identifier
@@ -788,7 +809,7 @@ Visitor.prototype.visitFunctionDeclaration = function visitFunctionDeclaration(n
     else newElements.push(acceptedNodes);
   }
   node["params"] = newElements;
-  // body is of types BlockStatement
+  // body is of types FunctionBody
   node["body"] = visitor.accept(node["body"], state, path.concat(["body"]));
   return node;
 }

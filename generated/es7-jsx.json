@@ -207,7 +207,7 @@
         "isOptional": false,
         "name": "body",
         "types": [
-          "BlockStatement"
+          "FunctionBody"
         ]
       },
       {
@@ -245,6 +245,39 @@
       "Node"
     ],
     "properties": [
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "Directive": {
+    "type": "interface",
+    "name": "Directive",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "expression",
+        "types": [
+          "Literal"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "directive",
+        "types": [
+          "string"
+        ]
+      },
       {
         "isList": false,
         "isOptional": true,
@@ -834,7 +867,8 @@
         "types": [
           "Literal",
           "JSXExpressionContainer",
-          "JSXElement"
+          "JSXElement",
+          "JSXFragment"
         ]
       },
       {
@@ -870,6 +904,40 @@
           "string"
         ]
       },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXOpeningFragment": {
+    "type": "interface",
+    "name": "JSXOpeningFragment",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXClosingFragment": {
+    "type": "interface",
+    "name": "JSXClosingFragment",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
       {
         "isList": false,
         "isOptional": true,
@@ -1598,7 +1666,7 @@
         "isOptional": false,
         "name": "body",
         "types": [
-          "BlockStatement"
+          "FunctionBody"
         ]
       },
       {
@@ -2039,7 +2107,7 @@
         "isOptional": false,
         "name": "body",
         "types": [
-          "BlockStatement",
+          "FunctionBody",
           "Expression"
         ]
       },
@@ -2929,7 +2997,8 @@
           "JSXText",
           "JSXExpressionContainer",
           "JSXSpreadChild",
-          "JSXElement"
+          "JSXElement",
+          "JSXFragment"
         ]
       },
       {
@@ -2938,6 +3007,52 @@
         "name": "closingElement",
         "types": [
           "JSXClosingElement"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXFragment": {
+    "type": "interface",
+    "name": "JSXFragment",
+    "parents": [
+      "Expression",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "openingFragment",
+        "types": [
+          "JSXOpeningFragment"
+        ]
+      },
+      {
+        "isList": true,
+        "isOptional": false,
+        "name": "children",
+        "types": [
+          "JSXText",
+          "JSXExpressionContainer",
+          "JSXSpreadChild",
+          "JSXElement",
+          "JSXFragment"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "closingFragment",
+        "types": [
+          "JSXClosingFragment"
         ]
       },
       {
@@ -3002,6 +3117,34 @@
       }
     ]
   },
+  "FunctionBody": {
+    "type": "interface",
+    "name": "FunctionBody",
+    "parents": [
+      "BlockStatement",
+      "Statement",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": true,
+        "isOptional": false,
+        "name": "body",
+        "types": [
+          "Directive",
+          "Statement"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
   "FunctionDeclaration": {
     "type": "interface",
     "name": "FunctionDeclaration",
@@ -3033,7 +3176,7 @@
         "isOptional": false,
         "name": "body",
         "types": [
-          "BlockStatement"
+          "FunctionBody"
         ]
       },
       {
