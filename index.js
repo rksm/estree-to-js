@@ -18,7 +18,6 @@ var mdAlias = {
     return [
       ...this.es6,
       "https://raw.githubusercontent.com/estree/estree/master/es2017.md",
-      "https://raw.githubusercontent.com/estree/estree/master/experimental/rest-spread-properties.md"
     ]
   },
   get es7Jsx() {
@@ -26,7 +25,35 @@ var mdAlias = {
       ...this.es7,
       "https://raw.githubusercontent.com/facebook/jsx/master/AST.md"
     ]
-  }
+  },
+
+  // Added ES<Year> mappings to avoid confusion with the ES5/6/7 versioning
+  // above. ES6 is actually ES2015, and ESNext is ES2016/2017/2018/..., see
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/New_in_JavaScript
+  get es2015() {
+    return [
+      ...this.es5,
+      "https://raw.githubusercontent.com/estree/estree/master/es2015.md",
+    ]
+  },
+  get es2016() {
+    return [
+      ...this.es2015,
+      "https://raw.githubusercontent.com/estree/estree/master/es2016.md",
+    ]
+  },
+  get es2017() {
+    return [
+      ...this.es2016,
+      "https://raw.githubusercontent.com/estree/estree/master/es2017.md",
+    ]
+  },
+  get es2018() {
+    return [
+      ...this.es2017,
+      "https://raw.githubusercontent.com/estree/estree/master/es2018.md",
+    ]
+  },
 }
 
 function fetch(urlStrings) {
