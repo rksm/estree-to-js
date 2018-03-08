@@ -1,5 +1,5 @@
 // <<<<<<<<<<<<< BEGIN OF AUTO GENERATED CODE <<<<<<<<<<<<<
-// Generated on 17-11-28 13:01 PST
+// Generated on 18-03-08 23:25 GMT+0100
 function Visitor() {}
 Visitor.prototype.accept = function accept(node, state, path) {
   if (!node) throw new Error("Undefined AST node in Visitor.accept:\n  " + path.join(".") + "\n  " + node);
@@ -508,7 +508,7 @@ Visitor.prototype.visitArrayExpression = function visitArrayExpression(node, sta
 }
 Visitor.prototype.visitObjectExpression = function visitObjectExpression(node, state, path) {
   var visitor = this;
-  // properties is a list with types Property, SpreadElement
+  // properties is a list with types Property
   var newElements = [];
   for (var i = 0; i < node["properties"].length; i++) {
     var ea = node["properties"][i];
@@ -611,7 +611,7 @@ Visitor.prototype.visitNewExpression = function visitNewExpression(node, state, 
   var visitor = this;
   // callee is of types Expression
   node["callee"] = visitor.accept(node["callee"], state, path.concat(["callee"]));
-  // arguments is a list with types Expression
+  // arguments is a list with types Expression, SpreadElement
   var newElements = [];
   for (var i = 0; i < node["arguments"].length; i++) {
     var ea = node["arguments"][i];
@@ -702,7 +702,7 @@ Visitor.prototype.visitAssignmentProperty = function visitAssignmentProperty(nod
 }
 Visitor.prototype.visitObjectPattern = function visitObjectPattern(node, state, path) {
   var visitor = this;
-  // properties is a list with types AssignmentProperty, RestElement
+  // properties is a list with types AssignmentProperty
   var newElements = [];
   for (var i = 0; i < node["properties"].length; i++) {
     var ea = node["properties"][i];

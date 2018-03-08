@@ -79,6 +79,7 @@ Visitor.prototype.accept = function accept(node, state, path) {
     case "ExportSpecifier": return this.visitExportSpecifier(node, state, path);
     case "ExportDefaultDeclaration": return this.visitExportDefaultDeclaration(node, state, path);
     case "ExportAllDeclaration": return this.visitExportAllDeclaration(node, state, path);
+    case "AwaitExpression": return this.visitAwaitExpression(node, state, path);
     case "RegExpLiteral": return this.visitRegExpLiteral(node, state, path);
     case "FunctionBody": return this.visitFunctionBody(node, state, path);
     case "FunctionDeclaration": return this.visitFunctionDeclaration(node, state, path);
@@ -447,7 +448,7 @@ Visitor.prototype.visitArrayExpression = function visitArrayExpression(node, sta
 }
 Visitor.prototype.visitObjectExpression = function visitObjectExpression(node, state, path) {
   var visitor = this;
-  // properties is a list with types Property
+  // properties is a list with types Property, SpreadElement
   var newElements = [];
   for (var i = 0; i < node["properties"].length; i++) {
     var ea = node["properties"][i];
@@ -641,7 +642,7 @@ Visitor.prototype.visitAssignmentProperty = function visitAssignmentProperty(nod
 }
 Visitor.prototype.visitObjectPattern = function visitObjectPattern(node, state, path) {
   var visitor = this;
-  // properties is a list with types AssignmentProperty
+  // properties is a list with types AssignmentProperty, RestElement
   var newElements = [];
   for (var i = 0; i < node["properties"].length; i++) {
     var ea = node["properties"][i];
@@ -777,6 +778,12 @@ Visitor.prototype.visitExportAllDeclaration = function visitExportAllDeclaration
   var visitor = this;
   // source is of types Literal
   node["source"] = visitor.accept(node["source"], state, path.concat(["source"]));
+  return node;
+}
+Visitor.prototype.visitAwaitExpression = function visitAwaitExpression(node, state, path) {
+  var visitor = this;
+  // argument is of types Expression
+  node["argument"] = visitor.accept(node["argument"], state, path.concat(["argument"]));
   return node;
 }
 Visitor.prototype.visitRegExpLiteral = function visitRegExpLiteral(node, state, path) {
