@@ -26,6 +26,14 @@ Visitor.prototype.accept = function accept(node, state, path) {
     case "MethodDefinition": return this.visitMethodDefinition(node, state, path);
     case "ModuleDeclaration": return this.visitModuleDeclaration(node, state, path);
     case "ModuleSpecifier": return this.visitModuleSpecifier(node, state, path);
+    case "JSXEmptyExpression": return this.visitJSXEmptyExpression(node, state, path);
+    case "JSXExpressionContainer": return this.visitJSXExpressionContainer(node, state, path);
+    case "JSXSpreadChild": return this.visitJSXSpreadChild(node, state, path);
+    case "JSXBoundaryElement": return this.visitJSXBoundaryElement(node, state, path);
+    case "JSXAttribute": return this.visitJSXAttribute(node, state, path);
+    case "JSXText": return this.visitJSXText(node, state, path);
+    case "JSXOpeningFragment": return this.visitJSXOpeningFragment(node, state, path);
+    case "JSXClosingFragment": return this.visitJSXClosingFragment(node, state, path);
     case "Identifier": return this.visitIdentifier(node, state, path);
     case "Literal": return this.visitLiteral(node, state, path);
     case "ExpressionStatement": return this.visitExpressionStatement(node, state, path);
@@ -82,12 +90,20 @@ Visitor.prototype.accept = function accept(node, state, path) {
     case "ExportDefaultDeclaration": return this.visitExportDefaultDeclaration(node, state, path);
     case "ExportAllDeclaration": return this.visitExportAllDeclaration(node, state, path);
     case "AwaitExpression": return this.visitAwaitExpression(node, state, path);
+    case "JSXMemberExpression": return this.visitJSXMemberExpression(node, state, path);
+    case "JSXNamespacedName": return this.visitJSXNamespacedName(node, state, path);
+    case "JSXOpeningElement": return this.visitJSXOpeningElement(node, state, path);
+    case "JSXClosingElement": return this.visitJSXClosingElement(node, state, path);
+    case "JSXSpreadAttribute": return this.visitJSXSpreadAttribute(node, state, path);
+    case "JSXElement": return this.visitJSXElement(node, state, path);
+    case "JSXFragment": return this.visitJSXFragment(node, state, path);
     case "RegExpLiteral": return this.visitRegExpLiteral(node, state, path);
     case "FunctionBody": return this.visitFunctionBody(node, state, path);
     case "FunctionDeclaration": return this.visitFunctionDeclaration(node, state, path);
     case "VariableDeclaration": return this.visitVariableDeclaration(node, state, path);
     case "ForOfStatement": return this.visitForOfStatement(node, state, path);
     case "ClassDeclaration": return this.visitClassDeclaration(node, state, path);
+    case "JSXIdentifier": return this.visitJSXIdentifier(node, state, path);
   }
   throw new Error("No visit function in AST visitor Visitor for:\n  " + path.join(".") + "\n  " + JSON.stringify(node));
 }
@@ -169,7 +185,9 @@ Visitor.prototype.visitSwitchCase = function visitSwitchCase(node, state, path) 
 Visitor.prototype.visitCatchClause = function visitCatchClause(node, state, path) {
   var visitor = this;
   // param is of types Pattern
-  node["param"] = visitor.accept(node["param"], state, path.concat(["param"]));
+  if (node["param"]) {
+    node["param"] = visitor.accept(node["param"], state, path.concat(["param"]));
+  }
   // body is of types BlockStatement
   node["body"] = visitor.accept(node["body"], state, path.concat(["body"]));
   return node;
@@ -257,6 +275,50 @@ Visitor.prototype.visitModuleSpecifier = function visitModuleSpecifier(node, sta
   var visitor = this;
   // local is of types Identifier
   node["local"] = visitor.accept(node["local"], state, path.concat(["local"]));
+  return node;
+}
+Visitor.prototype.visitJSXEmptyExpression = function visitJSXEmptyExpression(node, state, path) {
+  var visitor = this;
+  return node;
+}
+Visitor.prototype.visitJSXExpressionContainer = function visitJSXExpressionContainer(node, state, path) {
+  var visitor = this;
+  // expression is of types Expression, JSXEmptyExpression
+  node["expression"] = visitor.accept(node["expression"], state, path.concat(["expression"]));
+  return node;
+}
+Visitor.prototype.visitJSXSpreadChild = function visitJSXSpreadChild(node, state, path) {
+  var visitor = this;
+  // expression is of types Expression
+  node["expression"] = visitor.accept(node["expression"], state, path.concat(["expression"]));
+  return node;
+}
+Visitor.prototype.visitJSXBoundaryElement = function visitJSXBoundaryElement(node, state, path) {
+  var visitor = this;
+  // name is of types JSXIdentifier, JSXMemberExpression, JSXNamespacedName
+  node["name"] = visitor.accept(node["name"], state, path.concat(["name"]));
+  return node;
+}
+Visitor.prototype.visitJSXAttribute = function visitJSXAttribute(node, state, path) {
+  var visitor = this;
+  // name is of types JSXIdentifier, JSXNamespacedName
+  node["name"] = visitor.accept(node["name"], state, path.concat(["name"]));
+  // value is of types Literal, JSXExpressionContainer, JSXElement, JSXFragment
+  if (node["value"]) {
+    node["value"] = visitor.accept(node["value"], state, path.concat(["value"]));
+  }
+  return node;
+}
+Visitor.prototype.visitJSXText = function visitJSXText(node, state, path) {
+  var visitor = this;
+  return node;
+}
+Visitor.prototype.visitJSXOpeningFragment = function visitJSXOpeningFragment(node, state, path) {
+  var visitor = this;
+  return node;
+}
+Visitor.prototype.visitJSXClosingFragment = function visitJSXClosingFragment(node, state, path) {
+  var visitor = this;
   return node;
 }
 Visitor.prototype.visitIdentifier = function visitIdentifier(node, state, path) {
@@ -450,7 +512,7 @@ Visitor.prototype.visitArrayExpression = function visitArrayExpression(node, sta
 }
 Visitor.prototype.visitObjectExpression = function visitObjectExpression(node, state, path) {
   var visitor = this;
-  // properties is a list with types Property
+  // properties is a list with types Property, SpreadElement
   var newElements = [];
   for (var i = 0; i < node["properties"].length; i++) {
     var ea = node["properties"][i];
@@ -644,7 +706,7 @@ Visitor.prototype.visitAssignmentProperty = function visitAssignmentProperty(nod
 }
 Visitor.prototype.visitObjectPattern = function visitObjectPattern(node, state, path) {
   var visitor = this;
-  // properties is a list with types AssignmentProperty
+  // properties is a list with types AssignmentProperty, RestElement
   var newElements = [];
   for (var i = 0; i < node["properties"].length; i++) {
     var ea = node["properties"][i];
@@ -821,6 +883,85 @@ Visitor.prototype.visitAwaitExpression = function visitAwaitExpression(node, sta
   node["argument"] = visitor.accept(node["argument"], state, path.concat(["argument"]));
   return node;
 }
+Visitor.prototype.visitJSXMemberExpression = function visitJSXMemberExpression(node, state, path) {
+  var visitor = this;
+  // object is of types JSXMemberExpression, JSXIdentifier
+  node["object"] = visitor.accept(node["object"], state, path.concat(["object"]));
+  // property is of types JSXIdentifier
+  node["property"] = visitor.accept(node["property"], state, path.concat(["property"]));
+  return node;
+}
+Visitor.prototype.visitJSXNamespacedName = function visitJSXNamespacedName(node, state, path) {
+  var visitor = this;
+  // namespace is of types JSXIdentifier
+  node["namespace"] = visitor.accept(node["namespace"], state, path.concat(["namespace"]));
+  // name is of types JSXIdentifier
+  node["name"] = visitor.accept(node["name"], state, path.concat(["name"]));
+  return node;
+}
+Visitor.prototype.visitJSXOpeningElement = function visitJSXOpeningElement(node, state, path) {
+  var visitor = this;
+  // attributes is a list with types JSXAttribute, JSXSpreadAttribute
+  var newElements = [];
+  for (var i = 0; i < node["attributes"].length; i++) {
+    var ea = node["attributes"][i];
+    var acceptedNodes = ea ? visitor.accept(ea, state, path.concat(["attributes", i])) : ea;
+    if (Array.isArray(acceptedNodes)) newElements.push.apply(newElements, acceptedNodes);
+    else newElements.push(acceptedNodes);
+  }
+  node["attributes"] = newElements;
+  // name is of types JSXIdentifier, JSXMemberExpression, JSXNamespacedName
+  node["name"] = visitor.accept(node["name"], state, path.concat(["name"]));
+  return node;
+}
+Visitor.prototype.visitJSXClosingElement = function visitJSXClosingElement(node, state, path) {
+  var visitor = this;
+  // name is of types JSXIdentifier, JSXMemberExpression, JSXNamespacedName
+  node["name"] = visitor.accept(node["name"], state, path.concat(["name"]));
+  return node;
+}
+Visitor.prototype.visitJSXSpreadAttribute = function visitJSXSpreadAttribute(node, state, path) {
+  var visitor = this;
+  // argument is of types Expression
+  node["argument"] = visitor.accept(node["argument"], state, path.concat(["argument"]));
+  return node;
+}
+Visitor.prototype.visitJSXElement = function visitJSXElement(node, state, path) {
+  var visitor = this;
+  // openingElement is of types JSXOpeningElement
+  node["openingElement"] = visitor.accept(node["openingElement"], state, path.concat(["openingElement"]));
+  // children is a list with types JSXText, JSXExpressionContainer, JSXSpreadChild, JSXElement, JSXFragment
+  var newElements = [];
+  for (var i = 0; i < node["children"].length; i++) {
+    var ea = node["children"][i];
+    var acceptedNodes = ea ? visitor.accept(ea, state, path.concat(["children", i])) : ea;
+    if (Array.isArray(acceptedNodes)) newElements.push.apply(newElements, acceptedNodes);
+    else newElements.push(acceptedNodes);
+  }
+  node["children"] = newElements;
+  // closingElement is of types JSXClosingElement
+  if (node["closingElement"]) {
+    node["closingElement"] = visitor.accept(node["closingElement"], state, path.concat(["closingElement"]));
+  }
+  return node;
+}
+Visitor.prototype.visitJSXFragment = function visitJSXFragment(node, state, path) {
+  var visitor = this;
+  // openingFragment is of types JSXOpeningFragment
+  node["openingFragment"] = visitor.accept(node["openingFragment"], state, path.concat(["openingFragment"]));
+  // children is a list with types JSXText, JSXExpressionContainer, JSXSpreadChild, JSXElement, JSXFragment
+  var newElements = [];
+  for (var i = 0; i < node["children"].length; i++) {
+    var ea = node["children"][i];
+    var acceptedNodes = ea ? visitor.accept(ea, state, path.concat(["children", i])) : ea;
+    if (Array.isArray(acceptedNodes)) newElements.push.apply(newElements, acceptedNodes);
+    else newElements.push(acceptedNodes);
+  }
+  node["children"] = newElements;
+  // closingFragment is of types JSXClosingFragment
+  node["closingFragment"] = visitor.accept(node["closingFragment"], state, path.concat(["closingFragment"]));
+  return node;
+}
 Visitor.prototype.visitRegExpLiteral = function visitRegExpLiteral(node, state, path) {
   var visitor = this;
   return node;
@@ -888,6 +1029,10 @@ Visitor.prototype.visitClassDeclaration = function visitClassDeclaration(node, s
   }
   // body is of types ClassBody
   node["body"] = visitor.accept(node["body"], state, path.concat(["body"]));
+  return node;
+}
+Visitor.prototype.visitJSXIdentifier = function visitJSXIdentifier(node, state, path) {
+  var visitor = this;
   return node;
 }
 

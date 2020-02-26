@@ -1,5 +1,5 @@
 // <<<<<<<<<<<<< BEGIN OF AUTO GENERATED CODE <<<<<<<<<<<<<
-// Generated on 17-11-28 13:01 PST
+// Generated on 20-02-26 19:06 GMT+0100
 function Visitor() {}
 Visitor.prototype.accept = function accept(node, state, path) {
   if (!node) throw new Error("Undefined AST node in Visitor.accept:\n  " + path.join(".") + "\n  " + node);
@@ -85,6 +85,8 @@ Visitor.prototype.accept = function accept(node, state, path) {
     case "ImportNamespaceSpecifier": return this.visitImportNamespaceSpecifier(node, state, path);
     case "ExportNamedDeclaration": return this.visitExportNamedDeclaration(node, state, path);
     case "ExportSpecifier": return this.visitExportSpecifier(node, state, path);
+    case "AnonymousDefaultExportedFunctionDeclaration": return this.visitAnonymousDefaultExportedFunctionDeclaration(node, state, path);
+    case "AnonymousDefaultExportedClassDeclaration": return this.visitAnonymousDefaultExportedClassDeclaration(node, state, path);
     case "ExportDefaultDeclaration": return this.visitExportDefaultDeclaration(node, state, path);
     case "ExportAllDeclaration": return this.visitExportAllDeclaration(node, state, path);
     case "AwaitExpression": return this.visitAwaitExpression(node, state, path);
@@ -508,7 +510,7 @@ Visitor.prototype.visitArrayExpression = function visitArrayExpression(node, sta
 }
 Visitor.prototype.visitObjectExpression = function visitObjectExpression(node, state, path) {
   var visitor = this;
-  // properties is a list with types Property, SpreadElement
+  // properties is a list with types Property
   var newElements = [];
   for (var i = 0; i < node["properties"].length; i++) {
     var ea = node["properties"][i];
@@ -611,7 +613,7 @@ Visitor.prototype.visitNewExpression = function visitNewExpression(node, state, 
   var visitor = this;
   // callee is of types Expression
   node["callee"] = visitor.accept(node["callee"], state, path.concat(["callee"]));
-  // arguments is a list with types Expression
+  // arguments is a list with types Expression, SpreadElement
   var newElements = [];
   for (var i = 0; i < node["arguments"].length; i++) {
     var ea = node["arguments"][i];
@@ -702,7 +704,7 @@ Visitor.prototype.visitAssignmentProperty = function visitAssignmentProperty(nod
 }
 Visitor.prototype.visitObjectPattern = function visitObjectPattern(node, state, path) {
   var visitor = this;
-  // properties is a list with types AssignmentProperty, RestElement
+  // properties is a list with types AssignmentProperty
   var newElements = [];
   for (var i = 0; i < node["properties"].length; i++) {
     var ea = node["properties"][i];
@@ -828,9 +830,42 @@ Visitor.prototype.visitExportSpecifier = function visitExportSpecifier(node, sta
   node["local"] = visitor.accept(node["local"], state, path.concat(["local"]));
   return node;
 }
+Visitor.prototype.visitAnonymousDefaultExportedFunctionDeclaration = function visitAnonymousDefaultExportedFunctionDeclaration(node, state, path) {
+  var visitor = this;
+  // id is of types Identifier
+  if (node["id"]) {
+    node["id"] = visitor.accept(node["id"], state, path.concat(["id"]));
+  }
+  // params is a list with types Pattern
+  var newElements = [];
+  for (var i = 0; i < node["params"].length; i++) {
+    var ea = node["params"][i];
+    var acceptedNodes = ea ? visitor.accept(ea, state, path.concat(["params", i])) : ea;
+    if (Array.isArray(acceptedNodes)) newElements.push.apply(newElements, acceptedNodes);
+    else newElements.push(acceptedNodes);
+  }
+  node["params"] = newElements;
+  // body is of types FunctionBody
+  node["body"] = visitor.accept(node["body"], state, path.concat(["body"]));
+  return node;
+}
+Visitor.prototype.visitAnonymousDefaultExportedClassDeclaration = function visitAnonymousDefaultExportedClassDeclaration(node, state, path) {
+  var visitor = this;
+  // id is of types Identifier
+  if (node["id"]) {
+    node["id"] = visitor.accept(node["id"], state, path.concat(["id"]));
+  }
+  // superClass is of types Expression
+  if (node["superClass"]) {
+    node["superClass"] = visitor.accept(node["superClass"], state, path.concat(["superClass"]));
+  }
+  // body is of types ClassBody
+  node["body"] = visitor.accept(node["body"], state, path.concat(["body"]));
+  return node;
+}
 Visitor.prototype.visitExportDefaultDeclaration = function visitExportDefaultDeclaration(node, state, path) {
   var visitor = this;
-  // declaration is of types Declaration, Expression
+  // declaration is of types AnonymousDefaultExportedFunctionDeclaration, FunctionDeclaration, AnonymousDefaultExportedClassDeclaration, ClassDeclaration, Expression
   node["declaration"] = visitor.accept(node["declaration"], state, path.concat(["declaration"]));
   return node;
 }

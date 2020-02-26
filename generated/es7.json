@@ -1418,13 +1418,11 @@
     ],
     "properties": [
       {
-        "extensionFrom": "ObjectExpression",
         "isList": true,
         "isOptional": false,
         "name": "properties",
         "types": [
-          "Property",
-          "SpreadElement"
+          "Property"
         ]
       },
       {
@@ -1851,11 +1849,13 @@
         ]
       },
       {
+        "extensionFrom": "NewExpression",
         "isList": true,
         "isOptional": false,
         "name": "arguments",
         "types": [
-          "Expression"
+          "Expression",
+          "SpreadElement"
         ]
       },
       {
@@ -2147,13 +2147,11 @@
     ],
     "properties": [
       {
-        "extensionFrom": "ObjectPattern",
         "isList": true,
         "isOptional": false,
         "name": "properties",
         "types": [
-          "AssignmentProperty",
-          "RestElement"
+          "AssignmentProperty"
         ]
       },
       {
@@ -2527,6 +2525,108 @@
       }
     ]
   },
+  "AnonymousDefaultExportedFunctionDeclaration": {
+    "type": "interface",
+    "name": "AnonymousDefaultExportedFunctionDeclaration",
+    "parents": [
+      "Function",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "id",
+        "types": [
+          "Identifier"
+        ]
+      },
+      {
+        "isList": true,
+        "isOptional": false,
+        "name": "params",
+        "types": [
+          "Pattern"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "body",
+        "types": [
+          "FunctionBody"
+        ]
+      },
+      {
+        "extensionFrom": "Function",
+        "isList": false,
+        "isOptional": false,
+        "name": "generator",
+        "types": [
+          "boolean"
+        ]
+      },
+      {
+        "extensionFrom": "Function",
+        "isList": false,
+        "isOptional": false,
+        "name": "async",
+        "types": [
+          "boolean"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "AnonymousDefaultExportedClassDeclaration": {
+    "type": "interface",
+    "name": "AnonymousDefaultExportedClassDeclaration",
+    "parents": [
+      "Class",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "id",
+        "types": [
+          "Identifier"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "superClass",
+        "types": [
+          "Expression"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "body",
+        "types": [
+          "ClassBody"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
   "ExportDefaultDeclaration": {
     "type": "interface",
     "name": "ExportDefaultDeclaration",
@@ -2540,7 +2640,10 @@
         "isOptional": false,
         "name": "declaration",
         "types": [
-          "Declaration",
+          "AnonymousDefaultExportedFunctionDeclaration",
+          "FunctionDeclaration",
+          "AnonymousDefaultExportedClassDeclaration",
+          "ClassDeclaration",
           "Expression"
         ]
       },

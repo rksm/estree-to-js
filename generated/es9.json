@@ -220,6 +220,15 @@
         ]
       },
       {
+        "extensionFrom": "Function",
+        "isList": false,
+        "isOptional": false,
+        "name": "async",
+        "types": [
+          "boolean"
+        ]
+      },
+      {
         "isList": false,
         "isOptional": true,
         "name": "loc",
@@ -320,8 +329,9 @@
     ],
     "properties": [
       {
+        "extensionFrom": "CatchClause",
         "isList": false,
-        "isOptional": false,
+        "isOptional": true,
         "name": "param",
         "types": [
           "Pattern"
@@ -541,25 +551,30 @@
         ]
       },
       {
+        "extensionFrom": "TemplateElement",
+        "isList": false,
+        "isOptional": false,
         "name": "value",
-        "isComplex": true,
-        "value": [
-          {
-            "isList": false,
-            "isOptional": false,
-            "name": "cooked",
-            "types": [
-              "string"
-            ]
-          },
-          {
-            "isList": false,
-            "isOptional": false,
-            "name": "raw",
-            "types": [
-              "string"
-            ]
-          }
+        "types": [
+          "{"
+        ]
+      },
+      {
+        "extensionFrom": "TemplateElement",
+        "isList": false,
+        "isOptional": true,
+        "name": "cooked",
+        "types": [
+          "string"
+        ]
+      },
+      {
+        "extensionFrom": "TemplateElement",
+        "isList": false,
+        "isOptional": false,
+        "name": "raw",
+        "types": [
+          "string"
         ]
       },
       {
@@ -730,6 +745,205 @@
           "Identifier"
         ]
       },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXEmptyExpression": {
+    "type": "interface",
+    "name": "JSXEmptyExpression",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXExpressionContainer": {
+    "type": "interface",
+    "name": "JSXExpressionContainer",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "expression",
+        "types": [
+          "Expression",
+          "JSXEmptyExpression"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXSpreadChild": {
+    "type": "interface",
+    "name": "JSXSpreadChild",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "expression",
+        "types": [
+          "Expression"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXBoundaryElement": {
+    "type": "interface",
+    "name": "JSXBoundaryElement",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "name",
+        "types": [
+          "JSXIdentifier",
+          "JSXMemberExpression",
+          "JSXNamespacedName"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXAttribute": {
+    "type": "interface",
+    "name": "JSXAttribute",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "name",
+        "types": [
+          "JSXIdentifier",
+          "JSXNamespacedName"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "value",
+        "types": [
+          "Literal",
+          "JSXExpressionContainer",
+          "JSXElement",
+          "JSXFragment"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXText": {
+    "type": "interface",
+    "name": "JSXText",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "value",
+        "types": [
+          "string"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "raw",
+        "types": [
+          "string"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXOpeningFragment": {
+    "type": "interface",
+    "name": "JSXOpeningFragment",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXClosingFragment": {
+    "type": "interface",
+    "name": "JSXClosingFragment",
+    "parents": [
+      "Node"
+    ],
+    "properties": [
       {
         "isList": false,
         "isOptional": true,
@@ -1409,11 +1623,13 @@
     ],
     "properties": [
       {
+        "extensionFrom": "ObjectExpression",
         "isList": true,
         "isOptional": false,
         "name": "properties",
         "types": [
-          "Property"
+          "Property",
+          "SpreadElement"
         ]
       },
       {
@@ -1464,6 +1680,15 @@
         "isList": false,
         "isOptional": false,
         "name": "generator",
+        "types": [
+          "boolean"
+        ]
+      },
+      {
+        "extensionFrom": "Function",
+        "isList": false,
+        "isOptional": false,
+        "name": "async",
         "types": [
           "boolean"
         ]
@@ -1928,6 +2153,15 @@
         ]
       },
       {
+        "extensionFrom": "Function",
+        "isList": false,
+        "isOptional": false,
+        "name": "async",
+        "types": [
+          "boolean"
+        ]
+      },
+      {
         "isList": false,
         "isOptional": true,
         "name": "loc",
@@ -2120,11 +2354,13 @@
     ],
     "properties": [
       {
+        "extensionFrom": "ObjectPattern",
         "isList": true,
         "isOptional": false,
         "name": "properties",
         "types": [
-          "AssignmentProperty"
+          "AssignmentProperty",
+          "RestElement"
         ]
       },
       {
@@ -2540,6 +2776,15 @@
         ]
       },
       {
+        "extensionFrom": "Function",
+        "isList": false,
+        "isOptional": false,
+        "name": "async",
+        "types": [
+          "boolean"
+        ]
+      },
+      {
         "isList": false,
         "isOptional": true,
         "name": "loc",
@@ -2635,6 +2880,292 @@
         "name": "source",
         "types": [
           "Literal"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "AwaitExpression": {
+    "type": "interface",
+    "name": "AwaitExpression",
+    "parents": [
+      "Expression",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "argument",
+        "types": [
+          "Expression"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXMemberExpression": {
+    "type": "interface",
+    "name": "JSXMemberExpression",
+    "parents": [
+      "Expression",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "object",
+        "types": [
+          "JSXMemberExpression",
+          "JSXIdentifier"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "property",
+        "types": [
+          "JSXIdentifier"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXNamespacedName": {
+    "type": "interface",
+    "name": "JSXNamespacedName",
+    "parents": [
+      "Expression",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "namespace",
+        "types": [
+          "JSXIdentifier"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "name",
+        "types": [
+          "JSXIdentifier"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXOpeningElement": {
+    "type": "interface",
+    "name": "JSXOpeningElement",
+    "parents": [
+      "JSXBoundaryElement",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": true,
+        "isOptional": false,
+        "name": "attributes",
+        "types": [
+          "JSXAttribute",
+          "JSXSpreadAttribute"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "selfClosing",
+        "types": [
+          "boolean"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "name",
+        "types": [
+          "JSXIdentifier",
+          "JSXMemberExpression",
+          "JSXNamespacedName"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXClosingElement": {
+    "type": "interface",
+    "name": "JSXClosingElement",
+    "parents": [
+      "JSXBoundaryElement",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "name",
+        "types": [
+          "JSXIdentifier",
+          "JSXMemberExpression",
+          "JSXNamespacedName"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXSpreadAttribute": {
+    "type": "interface",
+    "name": "JSXSpreadAttribute",
+    "parents": [
+      "SpreadElement",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "argument",
+        "types": [
+          "Expression"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXElement": {
+    "type": "interface",
+    "name": "JSXElement",
+    "parents": [
+      "Expression",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "openingElement",
+        "types": [
+          "JSXOpeningElement"
+        ]
+      },
+      {
+        "isList": true,
+        "isOptional": false,
+        "name": "children",
+        "types": [
+          "JSXText",
+          "JSXExpressionContainer",
+          "JSXSpreadChild",
+          "JSXElement",
+          "JSXFragment"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "closingElement",
+        "types": [
+          "JSXClosingElement"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXFragment": {
+    "type": "interface",
+    "name": "JSXFragment",
+    "parents": [
+      "Expression",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "openingFragment",
+        "types": [
+          "JSXOpeningFragment"
+        ]
+      },
+      {
+        "isList": true,
+        "isOptional": false,
+        "name": "children",
+        "types": [
+          "JSXText",
+          "JSXExpressionContainer",
+          "JSXSpreadChild",
+          "JSXElement",
+          "JSXFragment"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "closingFragment",
+        "types": [
+          "JSXClosingFragment"
         ]
       },
       {
@@ -2771,6 +3302,15 @@
         ]
       },
       {
+        "extensionFrom": "Function",
+        "isList": false,
+        "isOptional": false,
+        "name": "async",
+        "types": [
+          "boolean"
+        ]
+      },
+      {
         "isList": false,
         "isOptional": true,
         "name": "loc",
@@ -2827,6 +3367,15 @@
       "Node"
     ],
     "properties": [
+      {
+        "extensionFrom": "ForOfStatement",
+        "isList": false,
+        "isOptional": false,
+        "name": "await",
+        "types": [
+          "boolean"
+        ]
+      },
       {
         "isList": false,
         "isOptional": false,
@@ -2894,6 +3443,34 @@
         "name": "body",
         "types": [
           "ClassBody"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "JSXIdentifier": {
+    "type": "interface",
+    "name": "JSXIdentifier",
+    "parents": [
+      "Identifier",
+      "Expression",
+      "Pattern",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "name",
+        "types": [
+          "string"
         ]
       },
       {

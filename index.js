@@ -18,13 +18,30 @@ var mdAlias = {
     return [
       ...this.es6,
       "https://raw.githubusercontent.com/estree/estree/master/es2017.md",
-      "https://raw.githubusercontent.com/estree/estree/master/experimental/rest-spread-properties.md"
     ]
   },
   get es7Jsx() {
     return [
       ...this.es7,
       "https://raw.githubusercontent.com/facebook/jsx/master/AST.md"
+    ]
+  },
+  get es8() {
+    return [
+      ...this.es7Jsx,
+      "https://raw.githubusercontent.com/estree/estree/master/es2018.md",
+    ]
+  },
+  get es9() {
+    return [
+      ...this.es8,
+      "https://raw.githubusercontent.com/estree/estree/master/es2019.md",
+    ]
+  },
+  get es10() {
+    return [
+      ...this.es9,
+      "https://raw.githubusercontent.com/estree/estree/master/es2020.md",
     ]
   }
 }
