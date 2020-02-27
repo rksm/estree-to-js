@@ -32,7 +32,7 @@ var parsedArgs = parseArgs(args);
       if (parsedArgs.generateVisitor) {
         console.log("Generating estree visitor source");
         var exceptions = [], name = "Visitor",
-            source = require("../index").createVisitor(spec, exceptions, name);
+            source = require("../index")[parsedArgs.format == 'esm' ? "createVisitorESM" : "createVisitor"](spec, exceptions, name);
         return source;
       }
     })
@@ -77,6 +77,12 @@ function parseArgs(args) {
     if (!path.isAbsolute(out)) out = path.join(process.cwd(), out);
   }
 
+  var format, formatI = args.indexOf("--format");
+  if (formatI > -1) {
+    format = args[formatI+1];
+    args = lang.arr.withoutAll(args, ['--format', format]);
+  }
+
   var specFile, specFileI = args.indexOf("--json-spec");
   if (specFileI > -1) {
     specFile = args[specFileI+1];
@@ -92,6 +98,7 @@ function parseArgs(args) {
 
   return {
     out: out,
+    format: format,
     urls: args,
     specFile: specFile,
     generateJson: generateJson,

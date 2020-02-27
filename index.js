@@ -158,7 +158,7 @@ function parseExtend(code) {
     line = line.replace(/,$/, ";");
     if (i === 0) {
       // var line = "extend interface Program {"
-      var m = line.match(/extend\s+([^\s]+)\s+([^\{]+)/);
+      var m = line.match(/extend\s+([^\s]+)\s+([^\s]+)(?:\s+<:\s+([^\{]+))?/);
       if (m) {
         spec.extendedType = m[1];
         spec.name = m[2].trim();
@@ -305,14 +305,14 @@ function parse(mdSource) {
 
 var noVisitProperties = ["loc"];
 
-function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, indent) {
+function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, indent, format = 'cjs') {
   // var nodeType = nodeTypes.FunctionExpression
   // lang.chain(nodeTypes).values().pluck("properties").invoke("pluck", "types").flatten().uniq().value().sort().join(",");
   // var exceptionNames = exceptions.map(ea => ea.name).concat(['"const"','"constructor"','"get"','"init"','"let"','"method"','"module"','"script"','"set"','"var"', 'boolean','false','number','string']),
-  var code = `visit${nodeType.name} = function visit${nodeType.name}(node, state, path) {\n`;
+  var code = (format == 'cjs' ? `visit${nodeType.name} = function ` : '') + `${indent}visit${nodeType.name}(node, state, path) {\n`;
   indent += "  ";
   code += `${indent}var visitor = this;\n`
-  return nodeType.properties.reduce((code, p) => {
+  code = nodeType.properties.reduce((code, p) => {
     if (!p.types || noVisitProperties.indexOf(p.name) > -1) return code;
     // var subtypes = lang.arr.withoutAll(p.types, exceptionNames);
     var subtypes = lang.arr.intersect(p.types, typeNames);
@@ -339,7 +339,40 @@ function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, i
       code += `${indent}}\n`;
     }
     return code;
-  }, code) + `${indent}return node;\n}\n`;
+  }, code) + `${indent}return node;\n`;
+  indent = indent.slice(0, -2);
+  code += `${indent}}\n`;
+  return code;
+}
+
+function createVisitorESM(nodeTypes, exceptions, name) {
+  var code = `// <<<<<<<<<<<<< BEGIN OF AUTO GENERATED CODE <<<<<<<<<<<<<\n`;
+  code += `// Generated on ${lang.date.format(new Date(), 'yy-mm-dd HH:MM Z')}\n`
+  code += `class ${name} {\n`;
+  exceptions = exceptions.concat(lang.obj.values(nodeTypes).filter(ea => ea.type === "enum"));
+  var types = lang.arr.withoutAll(lang.obj.values(nodeTypes), exceptions);
+  var typeNames = types.map(ea => ea.name);
+  var indent = "  ";
+  code += `${indent}accept(node, state, path) {\n`
+  indent += "  ";
+  code += `${indent}if (!node) throw new Error("Undefined AST node in ${name}.accept:\\n  " + path.join(".") + "\\n  " + node);\n`;
+  code += `${indent}if (!node.type) throw new Error("Strangee AST node without type in ${name}.accept:\\n  " + path.join(".") + "\\n  " + JSON.stringify(node));\n`;
+  code += `${indent}switch(node.type) {\n`
+  indent += "  ";
+  code +=  typeNames.map(typeName => `${indent}case "${typeName}": return this.visit${typeName}(node, state, path);`).join("\n");
+  indent = indent.slice(0, -2);
+  code += `\n${indent}}\n`
+  code += `${indent}throw new Error("No visit function in AST visitor ${name} for:\\n  " + path.join(".") + "\\n  " + JSON.stringify(node));\n`
+  indent = indent.slice(0, -2);
+  code += `${indent}}\n`
+  code += lang.obj.values(types)
+    .filter(type => exceptions.indexOf(type) === -1)
+    .map(ea => `${createVisitorFunctionCode(exceptions, types, typeNames, ea, indent, 'esm')}`)
+    .join("") + "\n";
+  code += '}\n';
+  code += `export default ${name};\n`;
+  code += `// >>>>>>>>>>>>> END OF AUTO GENERATED CODE >>>>>>>>>>>>>\n`;
+  return code;
 }
 
 function createVisitor(nodeTypes, exceptions, name) {
@@ -373,4 +406,5 @@ function createVisitor(nodeTypes, exceptions, name) {
 
 exports.fetch = fetch;
 exports.createVisitor = createVisitor;
+exports.createVisitorESM = createVisitorESM;
 exports.parse = parse;

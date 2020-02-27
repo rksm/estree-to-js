@@ -1,5 +1,5 @@
 // <<<<<<<<<<<<< BEGIN OF AUTO GENERATED CODE <<<<<<<<<<<<<
-// Generated on 20-02-26 19:06 GMT+0100
+// Generated on 20-02-27 10:47 GMT+0100
 function Visitor() {}
 Visitor.prototype.accept = function accept(node, state, path) {
   if (!node) throw new Error("Undefined AST node in Visitor.accept:\n  " + path.join(".") + "\n  " + node);
