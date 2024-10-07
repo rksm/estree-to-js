@@ -50,6 +50,12 @@ var mdAlias = {
       "https://raw.githubusercontent.com/estree/estree/master/es2021.md" 
     ]
   },
+  get es12() {
+    return [
+      ...this.es11,
+      "https://raw.githubusercontent.com/estree/estree/master/es2022.md" 
+    ]
+  },
   }
 }
 
