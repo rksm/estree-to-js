@@ -11,3 +11,6 @@
 
 ./bin/estree-to-js.js es10 --generate-json-spec --out generated/es10.json
 ./bin/estree-to-js.js es10 --generate-visitor --json-spec generated/es10.json --out generated/es10-visitor.js --format esm
+
+./bin/estree-to-js.js es11 --generate-json-spec --out generated/es11.json
+./bin/estree-to-js.js es11 --generate-visitor --json-spec generated/es11.json --out generated/es11-visitor.js --format esm

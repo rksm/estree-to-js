@@ -43,6 +43,13 @@ var mdAlias = {
       ...this.es9,
       "https://raw.githubusercontent.com/estree/estree/master/es2020.md",
     ]
+  },
+  get es11() {
+    return [
+      ...this.es10,
+      "https://raw.githubusercontent.com/estree/estree/master/es2021.md" 
+    ]
+  },
   }
 }
 
