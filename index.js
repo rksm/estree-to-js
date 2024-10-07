@@ -92,7 +92,7 @@ function extractTypeSourcesFromMarkdown(mdSource) {
       typesAkk.types.push(typesAkk.current); typesAkk.current = [];
     } else if (typesAkk.current && line.indexOf("```") > -1) {
       typesAkk.types.push(typesAkk.current); typesAkk.current = null;
-    } else if (!typesAkk.current && line.indexOf("```js") > -1) {
+    } else if (!typesAkk.current && !line.includes("jsonc") && line.indexOf("```js") > -1) {
       typesAkk.current = [];
     } else if (typesAkk.current) typesAkk.current.push(line);
     return typesAkk;
