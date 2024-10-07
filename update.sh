@@ -17,3 +17,6 @@
 
 ./bin/estree-to-js.js es12 --generate-json-spec --out generated/es12.json
 ./bin/estree-to-js.js es12 --generate-visitor --json-spec generated/es12.json --out generated/es12-visitor.js --format esm
+
+./bin/estree-to-js.js es12_stage3 --generate-json-spec --out generated/es12-stage3.json
+./bin/estree-to-js.js es12_stage3 --generate-visitor --json-spec generated/es12-stage3.json --out generated/es12-stage3-visitor.js --format esm

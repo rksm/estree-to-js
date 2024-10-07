@@ -56,6 +56,11 @@ var mdAlias = {
       "https://raw.githubusercontent.com/estree/estree/master/es2022.md" 
     ]
   },
+  get es12_stage3() {
+    return [
+      ...this.es12,
+      "https://raw.githubusercontent.com/estree/estree/master/stage3/decorators.md" 
+    ]
   }
 }
 
