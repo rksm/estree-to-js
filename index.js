@@ -327,9 +327,9 @@ function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, i
   // var nodeType = nodeTypes.FunctionExpression
   // lang.chain(nodeTypes).values().pluck("properties").invoke("pluck", "types").flatten().uniq().value().sort().join(",");
   // var exceptionNames = exceptions.map(ea => ea.name).concat(['"const"','"constructor"','"get"','"init"','"let"','"method"','"module"','"script"','"set"','"var"', 'boolean','false','number','string']),
-  var code = (format == 'cjs' ? `visit${nodeType.name} = function ` : '') + `${indent}visit${nodeType.name}(node, state, path) {\n`;
+  var code = (format == 'cjs' ? `visit${nodeType.name} = function ` : '') + `${indent}visit${nodeType.name} (node, state, path) {\n`;
   indent += "  ";
-  code += `${indent}var visitor = this;\n`
+  code += `${indent}const visitor = this;\n`
   code = nodeType.properties.reduce((code, p) => {
     if (!p.types || noVisitProperties.indexOf(p.name) > -1) return code;
     // var subtypes = lang.arr.withoutAll(p.types, exceptionNames);
@@ -337,20 +337,20 @@ function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, i
     if (!subtypes.length) return code;
     code += `${indent}// ${p.name} ${p.isList ? "is a list with types" : "is of types"} ${p.types.join(", ")}\n`;
     if (p.isOptional) {
-      code += `${indent}if (node["${p.name}"]) {\n`;
+      code += `${indent}if (node.${p.name}) {\n`;
       indent += "  ";
     }
     if (p.isList) {
-      code += `${indent}var newElements = [];\n`
-      code += `${indent}for (var i = 0; i < node["${p.name}"].length; i++) {\n`
-      code += `${indent}  var ea = node["${p.name}"][i];\n`,
-      code += `${indent}  var acceptedNodes = ea ? visitor.accept(ea, state, path.concat(["${p.name}", i])) : ea;\n`
+      code += `${indent}const newElements = [];\n`
+      code += `${indent}for (let i = 0; i < node.${p.name}.length; i++) {\n`
+      code += `${indent}  const ea = node.${p.name}[i];\n`,
+      code += `${indent}  const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['${p.name}', i])) : ea;\n`
       code += `${indent}  if (Array.isArray(acceptedNodes)) newElements.push.apply(newElements, acceptedNodes);\n`
       code += `${indent}  else newElements.push(acceptedNodes);\n`
       code += `${indent}}\n`
-      code += `${indent}node["${p.name}"] = newElements;\n`;
+      code += `${indent}node.${p.name} = newElements;\n`;
     } else {
-      code += `${indent}node["${p.name}"] = visitor.accept(node["${p.name}"], state, path.concat(["${p.name}"]));\n`
+      code += `${indent}node.${p.name} = visitor.accept(node.${p.name}, state, path.concat(['${p.name}']));\n`
     }
     if (p.isOptional) {
       indent = indent.slice(0,-2);
@@ -377,7 +377,7 @@ function createVisitorESM(nodeTypes, exceptions, name) {
   code += `${indent}if (!node.type) throw new Error("Strangee AST node without type in ${name}.accept:\\n  " + path.join(".") + "\\n  " + JSON.stringify(node));\n`;
   code += `${indent}switch(node.type) {\n`
   indent += "  ";
-  code +=  typeNames.map(typeName => `${indent}case "${typeName}": return this.visit${typeName}(node, state, path);`).join("\n");
+  code +=  typeNames.map(typeName => `${indent}case '${typeName}': return this.visit${typeName}(node, state, path);`).join("\n");
   indent = indent.slice(0, -2);
   code += `\n${indent}}\n`
   code += `${indent}throw new Error("No visit function in AST visitor ${name} for:\\n  " + path.join(".") + "\\n  " + JSON.stringify(node));\n`
