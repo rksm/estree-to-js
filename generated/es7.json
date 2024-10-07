@@ -255,39 +255,6 @@
       }
     ]
   },
-  "Directive": {
-    "type": "interface",
-    "name": "Directive",
-    "parents": [
-      "Node"
-    ],
-    "properties": [
-      {
-        "isList": false,
-        "isOptional": false,
-        "name": "expression",
-        "types": [
-          "Literal"
-        ]
-      },
-      {
-        "isList": false,
-        "isOptional": false,
-        "name": "directive",
-        "types": [
-          "string"
-        ]
-      },
-      {
-        "isList": false,
-        "isOptional": true,
-        "name": "loc",
-        "types": [
-          "SourceLocation"
-        ]
-      }
-    ]
-  },
   "SwitchCase": {
     "type": "interface",
     "name": "SwitchCase",
@@ -1922,6 +1889,14 @@
       },
       {
         "isList": false,
+        "isOptional": false,
+        "name": "generator",
+        "types": [
+          "false"
+        ]
+      },
+      {
+        "isList": false,
         "isOptional": true,
         "name": "id",
         "types": [
@@ -1934,15 +1909,6 @@
         "name": "params",
         "types": [
           "Pattern"
-        ]
-      },
-      {
-        "extensionFrom": "Function",
-        "isList": false,
-        "isOptional": false,
-        "name": "generator",
-        "types": [
-          "boolean"
         ]
       },
       {
@@ -2749,6 +2715,42 @@
           "boolean",
           "number",
           "RegExp"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": true,
+        "name": "loc",
+        "types": [
+          "SourceLocation"
+        ]
+      }
+    ]
+  },
+  "Directive": {
+    "type": "interface",
+    "name": "Directive",
+    "parents": [
+      "ExpressionStatement",
+      "Statement",
+      "Node"
+    ],
+    "properties": [
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "expression",
+        "types": [
+          "Literal",
+          "Expression"
+        ]
+      },
+      {
+        "isList": false,
+        "isOptional": false,
+        "name": "directive",
+        "types": [
+          "string"
         ]
       },
       {
