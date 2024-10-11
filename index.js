@@ -383,6 +383,7 @@ function createVisitorESM(nodeTypes, exceptions, name) {
   code += `${indent}accept(node, state, path) {\n`
   indent += "  ";
   code += `${indent}if (!node) throw new Error("Undefined AST node in ${name}.accept:\\n  " + path.join(".") + "\\n  " + node);\n`;
+  code += `${indent}if (node.constructor?.name === "SourceLocation") return node;\n`;
   code += `${indent}if (!node.type) throw new Error("Strangee AST node without type in ${name}.accept:\\n  " + path.join(".") + "\\n  " + JSON.stringify(node));\n`;
   code += `${indent}switch(node.type) {\n`
   indent += "  ";
