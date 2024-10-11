@@ -1,5 +1,5 @@
 // <<<<<<<<<<<<< BEGIN OF AUTO GENERATED CODE <<<<<<<<<<<<<
-// Generated on 22-04-11 17:07 GMT+0200
+// Generated on 24-10-10 19:42 GMT
 function Visitor() {}
 Visitor.prototype.accept = function accept(node, state, path) {
   if (!node) throw new Error("Undefined AST node in Visitor.accept:\n  " + path.join(".") + "\n  " + node);
@@ -23,7 +23,7 @@ Visitor.prototype.accept = function accept(node, state, path) {
     case "Class": return this.visitClass(node, state, path);
     case "ClassBody": return this.visitClassBody(node, state, path);
     case "MethodDefinition": return this.visitMethodDefinition(node, state, path);
-    case "ModuleDeclaration": return this.visitModuleDeclaration(node, state, path);
+    case "ImportOrExportDeclaration": return this.visitImportOrExportDeclaration(node, state, path);
     case "ModuleSpecifier": return this.visitModuleSpecifier(node, state, path);
     case "JSXEmptyExpression": return this.visitJSXEmptyExpression(node, state, path);
     case "JSXExpressionContainer": return this.visitJSXExpressionContainer(node, state, path);
@@ -125,8 +125,8 @@ Visitor.prototype.visitPosition = function visitPosition (node, state, path) {
 }
 Visitor.prototype.visitProgram = function visitProgram (node, state, path) {
   const visitor = this;
-  // body is a list with types Statement, ModuleDeclaration
-  const newElements = [];
+  // body is a list with types Statement, ImportOrExportDeclaration
+  var newElements = [];
   for (let i = 0; i < node.body.length; i++) {
     const ea = node.body[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['body', i])) : ea;
@@ -143,7 +143,7 @@ Visitor.prototype.visitFunction = function visitFunction (node, state, path) {
     node.id = visitor.accept(node.id, state, path.concat(['id']));
   }
   // params is a list with types Pattern
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.params.length; i++) {
     const ea = node.params[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['params', i])) : ea;
@@ -166,7 +166,7 @@ Visitor.prototype.visitSwitchCase = function visitSwitchCase (node, state, path)
     node.test = visitor.accept(node.test, state, path.concat(['test']));
   }
   // consequent is a list with types Statement
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.consequent.length; i++) {
     const ea = node.consequent[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['consequent', i])) : ea;
@@ -241,7 +241,7 @@ Visitor.prototype.visitClass = function visitClass (node, state, path) {
 Visitor.prototype.visitClassBody = function visitClassBody (node, state, path) {
   const visitor = this;
   // body is a list with types MethodDefinition
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.body.length; i++) {
     const ea = node.body[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['body', i])) : ea;
@@ -259,7 +259,7 @@ Visitor.prototype.visitMethodDefinition = function visitMethodDefinition (node, 
   node.value = visitor.accept(node.value, state, path.concat(['value']));
   return node;
 }
-Visitor.prototype.visitModuleDeclaration = function visitModuleDeclaration (node, state, path) {
+Visitor.prototype.visitImportOrExportDeclaration = function visitImportOrExportDeclaration (node, state, path) {
   const visitor = this;
   return node;
 }
@@ -330,7 +330,7 @@ Visitor.prototype.visitExpressionStatement = function visitExpressionStatement (
 Visitor.prototype.visitBlockStatement = function visitBlockStatement (node, state, path) {
   const visitor = this;
   // body is a list with types Statement
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.body.length; i++) {
     const ea = node.body[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['body', i])) : ea;
@@ -405,7 +405,7 @@ Visitor.prototype.visitSwitchStatement = function visitSwitchStatement (node, st
   // discriminant is of types Expression
   node.discriminant = visitor.accept(node.discriminant, state, path.concat(['discriminant']));
   // cases is a list with types SwitchCase
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.cases.length; i++) {
     const ea = node.cases[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['cases', i])) : ea;
@@ -491,7 +491,7 @@ Visitor.prototype.visitArrayExpression = function visitArrayExpression (node, st
   const visitor = this;
   // elements is a list with types Expression, SpreadElement
   if (node.elements) {
-    const newElements = [];
+    var newElements = [];
     for (let i = 0; i < node.elements.length; i++) {
       const ea = node.elements[i];
       const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['elements', i])) : ea;
@@ -505,7 +505,7 @@ Visitor.prototype.visitArrayExpression = function visitArrayExpression (node, st
 Visitor.prototype.visitObjectExpression = function visitObjectExpression (node, state, path) {
   const visitor = this;
   // properties is a list with types Property
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.properties.length; i++) {
     const ea = node.properties[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['properties', i])) : ea;
@@ -522,7 +522,7 @@ Visitor.prototype.visitFunctionExpression = function visitFunctionExpression (no
     node.id = visitor.accept(node.id, state, path.concat(['id']));
   }
   // params is a list with types Pattern
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.params.length; i++) {
     const ea = node.params[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['params', i])) : ea;
@@ -593,7 +593,7 @@ Visitor.prototype.visitCallExpression = function visitCallExpression (node, stat
   // callee is of types Expression, Super
   node.callee = visitor.accept(node.callee, state, path.concat(['callee']));
   // arguments is a list with types Expression, SpreadElement
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.arguments.length; i++) {
     const ea = node.arguments[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['arguments', i])) : ea;
@@ -608,7 +608,7 @@ Visitor.prototype.visitNewExpression = function visitNewExpression (node, state,
   // callee is of types Expression
   node.callee = visitor.accept(node.callee, state, path.concat(['callee']));
   // arguments is a list with types Expression, SpreadElement
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.arguments.length; i++) {
     const ea = node.arguments[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['arguments', i])) : ea;
@@ -621,7 +621,7 @@ Visitor.prototype.visitNewExpression = function visitNewExpression (node, state,
 Visitor.prototype.visitSequenceExpression = function visitSequenceExpression (node, state, path) {
   const visitor = this;
   // expressions is a list with types Expression
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.expressions.length; i++) {
     const ea = node.expressions[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['expressions', i])) : ea;
@@ -640,7 +640,7 @@ Visitor.prototype.visitArrowFunctionExpression = function visitArrowFunctionExpr
     node.id = visitor.accept(node.id, state, path.concat(['id']));
   }
   // params is a list with types Pattern
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.params.length; i++) {
     const ea = node.params[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['params', i])) : ea;
@@ -661,7 +661,7 @@ Visitor.prototype.visitYieldExpression = function visitYieldExpression (node, st
 Visitor.prototype.visitTemplateLiteral = function visitTemplateLiteral (node, state, path) {
   const visitor = this;
   // quasis is a list with types TemplateElement
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.quasis.length; i++) {
     const ea = node.quasis[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['quasis', i])) : ea;
@@ -670,7 +670,7 @@ Visitor.prototype.visitTemplateLiteral = function visitTemplateLiteral (node, st
   }
   node.quasis = newElements;
   // expressions is a list with types Expression
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.expressions.length; i++) {
     const ea = node.expressions[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['expressions', i])) : ea;
@@ -699,7 +699,7 @@ Visitor.prototype.visitAssignmentProperty = function visitAssignmentProperty (no
 Visitor.prototype.visitObjectPattern = function visitObjectPattern (node, state, path) {
   const visitor = this;
   // properties is a list with types AssignmentProperty
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.properties.length; i++) {
     const ea = node.properties[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['properties', i])) : ea;
@@ -713,7 +713,7 @@ Visitor.prototype.visitArrayPattern = function visitArrayPattern (node, state, p
   const visitor = this;
   // elements is a list with types Pattern
   if (node.elements) {
-    const newElements = [];
+    var newElements = [];
     for (let i = 0; i < node.elements.length; i++) {
       const ea = node.elements[i];
       const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['elements', i])) : ea;
@@ -763,7 +763,7 @@ Visitor.prototype.visitMetaProperty = function visitMetaProperty (node, state, p
 Visitor.prototype.visitImportDeclaration = function visitImportDeclaration (node, state, path) {
   const visitor = this;
   // specifiers is a list with types ImportSpecifier, ImportDefaultSpecifier, ImportNamespaceSpecifier
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.specifiers.length; i++) {
     const ea = node.specifiers[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['specifiers', i])) : ea;
@@ -802,7 +802,7 @@ Visitor.prototype.visitExportNamedDeclaration = function visitExportNamedDeclara
     node.declaration = visitor.accept(node.declaration, state, path.concat(['declaration']));
   }
   // specifiers is a list with types ExportSpecifier
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.specifiers.length; i++) {
     const ea = node.specifiers[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['specifiers', i])) : ea;
@@ -831,7 +831,7 @@ Visitor.prototype.visitAnonymousDefaultExportedFunctionDeclaration = function vi
     node.id = visitor.accept(node.id, state, path.concat(['id']));
   }
   // params is a list with types Pattern
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.params.length; i++) {
     const ea = node.params[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['params', i])) : ea;
@@ -860,6 +860,10 @@ Visitor.prototype.visitAnonymousDefaultExportedClassDeclaration = function visit
 Visitor.prototype.visitExportDefaultDeclaration = function visitExportDefaultDeclaration (node, state, path) {
   const visitor = this;
   // declaration is of types AnonymousDefaultExportedFunctionDeclaration, FunctionDeclaration, AnonymousDefaultExportedClassDeclaration, ClassDeclaration, Expression
+
+  const { declaration: decl } = node;
+  if (decl.type === 'FunctionDeclaration' && decl.id === null) { decl.type = 'FunctionExpression'; }
+  if (decl.type === 'ClassDeclaration' && decl.id === null) { decl.type = 'ClassExpression'; }
   node.declaration = visitor.accept(node.declaration, state, path.concat(['declaration']));
   return node;
 }
@@ -894,7 +898,7 @@ Visitor.prototype.visitJSXNamespacedName = function visitJSXNamespacedName (node
 Visitor.prototype.visitJSXOpeningElement = function visitJSXOpeningElement (node, state, path) {
   const visitor = this;
   // attributes is a list with types JSXAttribute, JSXSpreadAttribute
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.attributes.length; i++) {
     const ea = node.attributes[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['attributes', i])) : ea;
@@ -923,7 +927,7 @@ Visitor.prototype.visitJSXElement = function visitJSXElement (node, state, path)
   // openingElement is of types JSXOpeningElement
   node.openingElement = visitor.accept(node.openingElement, state, path.concat(['openingElement']));
   // children is a list with types JSXText, JSXExpressionContainer, JSXSpreadChild, JSXElement, JSXFragment
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.children.length; i++) {
     const ea = node.children[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['children', i])) : ea;
@@ -942,7 +946,7 @@ Visitor.prototype.visitJSXFragment = function visitJSXFragment (node, state, pat
   // openingFragment is of types JSXOpeningFragment
   node.openingFragment = visitor.accept(node.openingFragment, state, path.concat(['openingFragment']));
   // children is a list with types JSXText, JSXExpressionContainer, JSXSpreadChild, JSXElement, JSXFragment
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.children.length; i++) {
     const ea = node.children[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['children', i])) : ea;
@@ -967,7 +971,7 @@ Visitor.prototype.visitDirective = function visitDirective (node, state, path) {
 Visitor.prototype.visitFunctionBody = function visitFunctionBody (node, state, path) {
   const visitor = this;
   // body is a list with types Directive, Statement
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.body.length; i++) {
     const ea = node.body[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['body', i])) : ea;
@@ -982,7 +986,7 @@ Visitor.prototype.visitFunctionDeclaration = function visitFunctionDeclaration (
   // id is of types Identifier
   node.id = visitor.accept(node.id, state, path.concat(['id']));
   // params is a list with types Pattern
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.params.length; i++) {
     const ea = node.params[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['params', i])) : ea;
@@ -997,7 +1001,7 @@ Visitor.prototype.visitFunctionDeclaration = function visitFunctionDeclaration (
 Visitor.prototype.visitVariableDeclaration = function visitVariableDeclaration (node, state, path) {
   const visitor = this;
   // declarations is a list with types VariableDeclarator
-  const newElements = [];
+  var newElements = [];
   for (let i = 0; i < node.declarations.length; i++) {
     const ea = node.declarations[i];
     const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['declarations', i])) : ea;

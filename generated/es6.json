@@ -156,7 +156,7 @@
         "name": "body",
         "types": [
           "Statement",
-          "ModuleDeclaration"
+          "ImportOrExportDeclaration"
         ]
       },
       {
@@ -665,9 +665,9 @@
       }
     ]
   },
-  "ModuleDeclaration": {
+  "ImportOrExportDeclaration": {
     "type": "interface",
-    "name": "ModuleDeclaration",
+    "name": "ImportOrExportDeclaration",
     "parents": [
       "Node"
     ],
@@ -2270,7 +2270,7 @@
     "type": "interface",
     "name": "ImportDeclaration",
     "parents": [
-      "ModuleDeclaration",
+      "ImportOrExportDeclaration",
       "Node"
     ],
     "properties": [
@@ -2392,7 +2392,7 @@
     "type": "interface",
     "name": "ExportNamedDeclaration",
     "parents": [
-      "ModuleDeclaration",
+      "ImportOrExportDeclaration",
       "Node"
     ],
     "properties": [
@@ -2561,7 +2561,7 @@
     "type": "interface",
     "name": "ExportDefaultDeclaration",
     "parents": [
-      "ModuleDeclaration",
+      "ImportOrExportDeclaration",
       "Node"
     ],
     "properties": [
@@ -2591,7 +2591,7 @@
     "type": "interface",
     "name": "ExportAllDeclaration",
     "parents": [
-      "ModuleDeclaration",
+      "ImportOrExportDeclaration",
       "Node"
     ],
     "properties": [
