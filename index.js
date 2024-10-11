@@ -341,7 +341,7 @@ function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, i
       indent += "  ";
     }
     if (p.isList) {
-      code += `${indent}const newElements = [];\n`
+      code += `${indent}var newElements = [];\n`
       code += `${indent}for (let i = 0; i < node.${p.name}.length; i++) {\n`
       code += `${indent}  const ea = node.${p.name}[i];\n`,
       code += `${indent}  const acceptedNodes = ea ? visitor.accept(ea, state, path.concat(['${p.name}', i])) : ea;\n`
