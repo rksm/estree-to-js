@@ -336,6 +336,15 @@ function createVisitorFunctionCode(exceptions, nodeTypes, typeNames, nodeType, i
     var subtypes = lang.arr.intersect(p.types, typeNames);
     if (!subtypes.length) return code;
     code += `${indent}// ${p.name} ${p.isList ? "is a list with types" : "is of types"} ${p.types.join(", ")}\n`;
+    
+    if (nodeType.name === 'ExportDefaultDeclaration') {
+      code += `
+${indent}const { declaration: decl } = node;
+${indent}if (decl.type === 'FunctionDeclaration' && decl.id === null) { decl.type = 'FunctionExpression'; }
+${indent}if (decl.type === 'ClassDeclaration' && decl.id === null) { decl.type = 'ClassExpression'; }
+`
+    }
+    
     if (p.isOptional) {
       code += `${indent}if (node.${p.name}) {\n`;
       indent += "  ";
